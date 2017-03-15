@@ -6,6 +6,7 @@
 
 <script>
     import { Indicator } from 'mint-ui';
+    import rem from './config/rem.js'
     export default {
         name: 'app',
         created() {
@@ -22,13 +23,12 @@
 
 </script>
 
-<style>
+<style lang="scss">
+@import './common/style/common';
     #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: 60px;
     }
 </style>
