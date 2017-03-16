@@ -38,7 +38,7 @@ $fc:#fff;
     transform: translateY(-50%);
 }
 
-//定位上下居中
+//定位左右居中
 @mixin cl {  
 	position: absolute;
 	left: 50%;
@@ -67,4 +67,15 @@ $fc:#fff;
 	display: flex;
 	justify-content: $type;
 
+}
+
+//滚动list增加active样式
+@mixin active($color:rgba(145, 225, 174,0.8),$spanColor:#64c888){
+    background-color: $color;
+    h3,h5{
+        color:#fff !important;
+    }
+    h3 span{
+        background-color:$spanColor !important;
+    }
 }

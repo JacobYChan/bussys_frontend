@@ -11,7 +11,6 @@
                 <div class="yao-icon">
                     <span slot="icon" class="iconfont icon-snimicyaoyiyao"></span>
                 </div>
-
             </mt-tab-item>
             <mt-tab-item id="mall">
                 <span slot="icon" class="iconfont icon-shangcheng"></span> 商城
@@ -28,12 +27,15 @@
     export default {
         data() {
             return {
-                selected: 'home'
+                selected: ''
             }
         },
         created() {
             let currentSelected = this.$route.name;
             this.selected = currentSelected.toLowerCase();
+            if (this.selected == "home") {
+                this.selected = "";
+            }
             this.$watch('selected', function (val) {
                 this.$router.replace(val);
             })
