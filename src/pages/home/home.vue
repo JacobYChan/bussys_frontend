@@ -39,15 +39,26 @@
             </transition-group>
         </div>
         <footerbar></footerbar>
-        <div class="v-modal" style="z-index: 1000;" v-if="confirm"></div>
+        <transition name="component-fade" mode="out-in">
+            <component v-bind:is="currentView"></component>
+        </transition>
+        <div class="v-modal" style="z-index: 100;" v-if="show"></div>
     </div>
 </template>
 
 <script>
     import footerbar from '../../components/footer/footer'
+    import redpactket from './home-redPacket/redPacket'
+    import goldcoin from './home-goldCoin/goldCoin'
+    import gift from './home-gift/gift'
+    import adv from './home-adv/adv'
     export default {
         components: {
-            footerbar
+            footerbar,
+            redpactket,
+            goldcoin,
+            gift,
+            adv
         },
         data() {
             return {
@@ -108,7 +119,11 @@
                 ],
                 ScrollContent: null,
                 scrollNum: 0,
-                upHeight: 0
+                upHeight: 0,
+                //动态组件
+                currentView: goldcoin,
+                //显示遮罩
+                show: true
             }
         },
         mounted() {
@@ -184,6 +199,16 @@
     
     .fade-list-move {
         transition: transform 1s;
+    }
+    
+    .component-fade-enter-active,
+    .component-fade-leave-active {
+        transition: opacity .3s ease;
+    }
+    
+    .component-fade-enter,
+    .component-fade-leave-active {
+        opacity: 0;
     }
     
     #shake {
