@@ -39,6 +39,11 @@
             </transition-group>
         </div>
         <footerbar></footerbar>
+        <!--开屏页 -->
+        <transition name="component-fade" mode="out-in">
+            <welcome></welcome>
+        </transition>
+        <!--动态组件，显示摇出来的结果 -->
         <transition name="component-fade" mode="out-in">
             <component v-bind:is="currentView"></component>
         </transition>
@@ -48,17 +53,21 @@
 
 <script>
     import footerbar from '../../components/footer/footer'
-    import redpactket from './home-redPacket/redPacket'
+    import redpacket from './home-redPacket/redPacket'
     import goldcoin from './home-goldCoin/goldCoin'
     import gift from './home-gift/gift'
     import adv from './home-adv/adv'
+    import recommendgood from './recommendGood/recommendGood'
+    import welcome from './welcome/welcome'
     export default {
         components: {
             footerbar,
-            redpactket,
+            redpacket,
             goldcoin,
             gift,
-            adv
+            adv,
+            recommendgood,
+            welcome
         },
         data() {
             return {
@@ -121,7 +130,7 @@
                 scrollNum: 0,
                 upHeight: 0,
                 //动态组件
-                currentView: goldcoin,
+                currentView: null,
                 //显示遮罩
                 show: true
             }
