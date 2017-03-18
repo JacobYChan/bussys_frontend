@@ -4,178 +4,205 @@
             <section class="head margin">
                 <h3>嗨！我是小瑶！</h3>
                 <img v-lazy="head_img">
-                <p>很高兴和您成为摇一摇里的新朋友</p>
-                <p>每次摇一摇都有惊喜等你哦，跟我一起摇起来吧！</p>
+                <p class="ellipsis">很高兴和您成为摇一摇里的新朋友</p>
+                <p class="ellipsis">摇一摇有惊喜哦，跟我一起摇起来吧！</p>
             </section>
-            <hgroup>
+            <hgroup class="welcome_detail">
                 <section>
                     <i class="iconfont icon-yu"></i>
-                    <p>购物时可用<em>余额</em>抵扣现金</p>
-                    <p>获得更多优惠</p>
+                    <p class="ellipsis">购物时可用<em>余额</em>抵扣现金</p>
+                    <p class="ellipsis">获得更多优惠</p>
                 </section>
                 <section>
                     <i class="iconfont icon-duobaobi"></i>
-                    <p>参与<em>金币</em>抽奖，赢取幸运豪礼</p>
-                    <p>邀请好友PK游戏，还能赚取更多<em>金币</em></p>
+                    <p class="ellipsis">参与<em>金币</em>抽奖，赢取幸运豪礼</p>
+                    <p class="ellipsis">邀请好友PK游戏，还能赚取更多<em>金币</em></p>
                 </section>
                 <section>
                     <i class="iconfont icon-iconyue2"></i>
-                    <p>所有的返现和摇到的锦囊</p>
-                    <p>都是真金白银能直接<em>提现</em></p>
+                    <p class="ellipsis">所有的返现和摇到的锦囊</p>
+                    <p class="ellipsis">都是真金白银能直接<em>提现</em></p>
                 </section>
             </hgroup>
-            <section>
-                <i class="iconfont icon-xiaoxi"></i>
-                <span>赶快领取小瑶送你的<em>专属福利</em></span>
+            <section class="welcome_msg">
+                <i class="iconfont icon-xiaoxi">
+                                        <mt-badge type="error" size="small">1</mt-badge>
+                                    </i>
+                <span class="ellipsis">赶快领取小瑶送你的<em>专属福利</em></span>
             </section>
-            <section>
+            <section class="notRemind">
                 <!-- CheckBox-->
                 <span class="mint-checkbox"><input type="checkbox" class="mint-checkbox-input" v-model="checked" id="remind"> 
-                    <span class="mint-checkbox-core" @click="check()"></span>
+                                            <span class="mint-checkbox-core" @click="check()"></span>
                 </span>
                 <label for="remind">下次不再提醒</label>
             </section>
-
             <section class="close"><span>×</span></section>
         </div>
     </div>
 </template>
 
 <script>
-    export default {
-        components: {
+export default {
+    components: {
 
-        },
-        data() {
-            return {
-                head_img: 'http://wx.jsheyun.cn/logo.png',
-                name: '广电来摇吧',
-                checked:false,
-            }
-        },
-        created() {
-            document.title = "公交车摇一摇";
-        },
-        methods:{
-            check:function(){
-                this.checked=!this.checked;
-            }    
+    },
+    data() {
+        return {
+            head_img: 'http://wx.jsheyun.cn/logo.png',
+            name: '广电来摇吧',
+            checked: false,
+        }
+    },
+    created() {
+        document.title = "公交车摇一摇";
+    },
+    methods: {
+        check: function () {
+            this.checked = !this.checked;
         }
     }
+}
 
 </script>
 <style lang="scss" scoped>
-    @import '../../../common/style/mixin';
-    //复选框样式
-    .mint-checkbox-core {
-        display: inline-block;
-        background-color: #fff;
-        border-radius: 100%;
-        border: 1px solid #ccc;
-        position: relative;
-        width: 20px;
-        height: 20px;
-    }
-    
-    .mint-checkbox-core::after {
-        border: 2px solid transparent;
-        border-left: 0;
-        border-top: 0;
-        content: " ";
-        top: 3px;
-        left: 6px;
-        position: absolute;
-        width: 4px;
-        height: 8px;
-        -webkit-transform: rotate(45deg) scale(0);
-        transform: rotate(45deg) scale(0);
-        -webkit-transition: -webkit-transform .2s;
-        transition: -webkit-transform .2s;
-        transition: transform .2s;
-        transition: transform .2s, -webkit-transform .2s;
-    }
-    
-    .mint-checkbox-input:checked + .mint-checkbox-core {
-        background-color: #26a2ff;
-        border-color: #26a2ff;
-    }
-    
-    .mint-checkbox-input:checked + .mint-checkbox-core::after {
-        border-color: #fff;
-        -webkit-transform: rotate(45deg) scale(1);
-        transform: rotate(45deg) scale(1);
-    }
-    
-    .mint-cell-allow-right:after {
-        border: 2px solid #c8c8cd;
-        border-bottom-width: 0;
-        border-left-width: 0;
-        content: " ";
-        top: 50%;
-        right: 20px;
-        position: absolute;
-        width: 5px;
-        height: 5px;
-        -webkit-transform: translateY(-50%) rotate(45deg);
-        transform: translateY(-50%) rotate(45deg);
-    }
-    
-    .welcome {
-        @include center;
-        z-index: 101;
-        background-color: #efefef;
-        @include wh(13rem, 20rem);
-        .head {
-            @include wh(100%, auto);
-            margin-top: 2rem;
-            .logo {
-                background-color: #fff;
-                @include borderRadius(50%);
-                @include wh(2rem, 2rem);
-                padding: .2rem;
-                img {
-                    @include wh(2rem, 2rem);
-                }
-            }
-            h3 {
-                @include sc(.6rem, #fdd482);
-                font-weight: normal;
-                margin-top: .3rem;
-            }
-        }
-        h4 {
-            @include sc(.8rem, #fdd482);
+@import '../../../common/style/mixin';
+//复选框样式
+.mint-checkbox-core {
+    display: inline-block;
+    background-color: #fff;
+    border-radius: .1rem;
+    border: 1px solid #ccc;
+    position: relative;
+    width: .8rem;
+    height: .8rem;
+}
+
+.mint-checkbox-core::after {
+    border: 2px solid transparent;
+    border-left: 0;
+    border-top: 0;
+    content: " ";
+    top: 3px;
+    left: 6px;
+    position: absolute;
+    width: 4px;
+    height: 8px;
+    -webkit-transform: rotate(45deg) scale(0);
+    transform: rotate(45deg) scale(0);
+    -webkit-transition: -webkit-transform .2s;
+    transition: -webkit-transform .2s;
+    transition: transform .2s;
+    transition: transform .2s, -webkit-transform .2s;
+}
+
+.mint-checkbox-input:checked+.mint-checkbox-core {
+    border-color: #fe6028;
+    background-color: #fff;
+}
+
+.mint-checkbox-input:checked+.mint-checkbox-core::after {
+    border-color: #fe6028;
+}
+
+.welcome {
+    @include center;
+    z-index: 101;
+    background-color: #efefef;
+    @include wh(13rem, 20.8rem);
+    .head {
+        @include wh(100%, auto);
+        h3 {
+            @include sc(.7rem, #5e5f5b);
             font-weight: normal;
-            @include center;
-            width: 100%;
+            margin-top: .3rem;
         }
-        .open {
-            img {
-                @include wh(3rem, 3rem);
-                @include cl();
-                top: 60%;
-            }
+        img {
+            @include wh(2rem, 2rem);
+            @include borderRadius(50%);
+            margin-top: .5rem;
         }
         p {
-            @include sc(.4rem, #f5aa85);
-            @include cl();
-            bottom: 6%;
+            width: 95%;
+            @include sc(.7rem, #5e5f5b);
+            margin: 0 auto;
         }
-        .close {
-            position: absolute;
-            right: -.8rem;
-            top: -.8rem;
+    }
+    .welcome_detail {
+        section {
+            margin: 1rem auto;
+            width: 90%;
             background-color: #fff;
-            @include borderRadius(50%);
-            @include wh(1.5rem, 1.5rem);
-            border: 2px solid #e1544a;
-            box-shadow: 0 0 0 1px #ff6226;
-            span {
-                @include sc(1.8rem, #ff6226);
-                position: absolute;
-                top: -.53rem;
-                right: .06rem;
+            position: relative;
+            @include borderRadius(.5rem);
+            padding: .3rem 0;
+            em {
+                color: #ff6226;
+                font-style: normal;
+            }
+            i {
+                font-size: 1.4rem;
+                @include cl;
+                top: -1rem;
+                &.icon-yu {
+                    color: #ff753e;
+                }
+                &.icon-duobaobi {
+                    color: #ffb400;
+                }
+                &.icon-iconyue2 {
+                    color: #fb4c60;
+                }
+            }
+            p {
+                @include sc(.7rem, #5e5f5b);
+                margin-top: .1rem;
             }
         }
     }
+    .welcome_msg {
+        margin-top: -.5rem;
+        .icon-xiaoxi {
+            position: relative;
+            @include sc(1.2rem, #666);
+            .mint-badge {
+                position: absolute;
+                padding: .2rem;
+                border-radius: 50%;
+                width: .3rem;
+                height: .3rem;
+                font-size: .4rem;
+                vertical-align: top;
+                left: .9rem;
+                top: -.1rem;
+                line-height: .4rem;
+                color: #fff;
+            }
+        }
+        span {
+            @include sc(.7rem, #5e5f5b);
+        }
+    }
+    .notRemind {
+        label {
+            @include sc(.7rem, #fe6028);
+        }
+    }
+    .close {
+        position: absolute;
+        right: -.8rem;
+        top: -.8rem;
+        background-color: #fff;
+        @include borderRadius(50%);
+        @include wh(1.5rem, 1.5rem);
+        border: 2px solid #e1544a;
+        box-shadow: 0 0 0 1px #ff6226;
+        span {
+            @include sc(1.8rem, #ff6226);
+            position: absolute;
+            top: -.53rem;
+            right: .06rem;
+        }
+    }
+}
 </style>
