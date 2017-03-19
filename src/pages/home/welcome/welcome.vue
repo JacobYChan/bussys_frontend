@@ -67,7 +67,7 @@ export default {
             this.checked = !this.checked;
         },
         close: function () {
-            this.$emit('close');
+            this.$emit('close',this.checked);
         }
     }
 }

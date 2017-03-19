@@ -41,7 +41,7 @@
         <footerbar></footerbar>
         <!--开屏页 -->
         <transition name="component-fade" mode="out-in">
-            <welcome v-if="showWelcome" @close="closeWelcom()" :getFromparent='22'></welcome>
+            <welcome v-if="showWelcome" @close="closeWelcome" :getFromparent='22'></welcome>
         </transition>
         <!--动态组件，显示摇出来的结果 -->
         <transition name="component-fade" mode="out-in">
@@ -61,6 +61,7 @@ import gift from './home-gift/gift'
 import adv from './home-adv/adv'
 import recommendgood from './recommendGood/recommendGood'
 import welcome from './welcome/welcome'
+import { getStore, setStore } from '../../config/mUtils'
 export default {
     components: {
         footerbar,
@@ -151,6 +152,10 @@ export default {
     },
     created() {
         document.title = "公交摇一摇";
+        if (getStore('notMind')) {
+            this.show = false;
+            this.showWelcome = false;
+        };
     },
     methods: {
         Start: function () {
@@ -197,10 +202,10 @@ export default {
 
             }
         },
-        closeWelcom: function () {
+        closeWelcome: function (checked) {
             this.showWelcome = false;
-            this.show=false;
-            
+            this.show = false;
+            setStore('notMind', checked);
         },
 
     }
