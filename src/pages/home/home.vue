@@ -45,7 +45,7 @@
         </transition>
         <!--动态组件，显示摇出来的结果 -->
         <transition name="component-fade" mode="out-in">
-            <component v-bind:is="currentView"></component>
+            <component v-bind:is="currentView" @close="closePrize"></component>
         </transition>
         <transition name="component-fade" mode="out-in">
             <div class="v-modal" style="z-index: 100;" v-show="show"></div>
@@ -133,7 +133,7 @@ export default {
             scrollNum: 0,
             upHeight: 0,
             //动态组件
-            currentView: null,
+            currentView: adv,
             //显示遮罩
             show: true,
             showWelcome: true,
@@ -207,7 +207,10 @@ export default {
             this.show = false;
             setStore('notMind', checked);
         },
-
+        closePrize: function () {
+            this.currentView = "";
+            this.show = false;
+        }
     }
 }
 

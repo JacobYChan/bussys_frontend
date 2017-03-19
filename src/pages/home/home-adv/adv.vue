@@ -1,7 +1,7 @@
 <template>
     <div class="adv">
         <section class="open"><img v-lazy="adv_img"></section>
-        <section class="close"><span>×</span></section>
+        <section class="close" @click="close"><span>×</span></section>
     </div>
 </template>
 
@@ -18,6 +18,11 @@
         },
         created(){
             document.title="公交车摇一摇";
+        },
+        methods:{
+            close:function(){
+                this.$emit('close');
+            }
         }
     }
 </script>

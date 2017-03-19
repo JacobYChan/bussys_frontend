@@ -5,8 +5,8 @@
         </section>
         <section class="good_img"><img v-lazy="good_img"></section>
         <p class="ellipsis">{{good_title}}</p>
-        <mt-button type="primary" size="large">立即领取</mt-button>
-        <section class="close"><span>×</span></section>
+        <mt-button type="primary" size="large" @click="">立即领取</mt-button>
+        <section class="close" @click="close"><span>×</span></section>
     </div>
 </template>
 
@@ -24,6 +24,11 @@
         },
         created() {
             document.title = "公交车摇一摇";
+        },
+        methods:{
+            close:function(){
+                this.$emit('close');
+            }
         }
     }
 

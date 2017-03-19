@@ -6,9 +6,9 @@
                 <h3>{{name}}</h3>
             </section>
             <h4>给您发了一个红包</h4>
-            <section class="open"><img src="../../../common/images/kai.png"></section>
+            <section class="open" @click="openRedpacket"><img  src="../../../common/images/kai.png"></section>
             <p>点击广告得红包</p>
-            <section class="close"><span>×</span></section>
+            <section class="close" @click="close"><span>×</span></section>
         </div>
         <div class="packetResult" v-else>
             <section class="blank">
@@ -21,7 +21,7 @@
                 <span>{{packet_Amount}}</span>元
             </section>
             <p>已存入您的财富账户</p>
-            <section class="close"><span>×</span></section>
+            <section class="close" @click="close"><span>×</span></section>
         </div>
     </div>
 </template>
@@ -35,12 +35,20 @@
             return {
                 logo: 'http://wx.jsheyun.cn/logo.png',
                 name: '广电来摇吧',
-                status: 2,
+                status: 1,
                 packet_Amount:'5.94',
             }
         },
         created() {
             document.title = "公交车摇一摇";
+        },
+        methods:{
+            openRedpacket:function(){
+                this.status = 2;
+            },
+            close:function(){
+                this.$emit('close');
+            }
         }
     }
 
