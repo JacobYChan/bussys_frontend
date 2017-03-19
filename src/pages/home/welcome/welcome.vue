@@ -26,18 +26,18 @@
             </hgroup>
             <section class="welcome_msg">
                 <i class="iconfont icon-xiaoxi">
-                                        <mt-badge type="error" size="small">1</mt-badge>
-                                    </i>
+                                                <mt-badge type="error" size="small">1</mt-badge>
+                                            </i>
                 <span class="ellipsis">赶快领取小瑶送你的<em>专属福利</em></span>
             </section>
             <section class="notRemind">
                 <!-- CheckBox-->
                 <span class="mint-checkbox"><input type="checkbox" class="mint-checkbox-input" v-model="checked" id="remind"> 
-                                            <span class="mint-checkbox-core" @click="check()"></span>
+                                                    <span class="mint-checkbox-core" @click="check()"></span>
                 </span>
                 <label for="remind">下次不再提醒</label>
             </section>
-            <section class="close"><span>×</span></section>
+            <section class="close" @click="close()"><span>×</span></section>
         </div>
     </div>
 </template>
@@ -54,12 +54,20 @@ export default {
             checked: false,
         }
     },
+    props: {
+        getFromparent: {
+           
+        }
+    },
     created() {
         document.title = "公交车摇一摇";
     },
     methods: {
         check: function () {
             this.checked = !this.checked;
+        },
+        close: function () {
+            this.$emit('close');
         }
     }
 }
@@ -88,12 +96,8 @@ export default {
     position: absolute;
     width: 4px;
     height: 8px;
-    -webkit-transform: rotate(45deg) scale(0);
     transform: rotate(45deg) scale(0);
-    -webkit-transition: -webkit-transform .2s;
-    transition: -webkit-transform .2s;
-    transition: transform .2s;
-    transition: transform .2s, -webkit-transform .2s;
+    transition: transform 0s;
 }
 
 .mint-checkbox-input:checked+.mint-checkbox-core {
@@ -181,6 +185,10 @@ export default {
         }
         span {
             @include sc(.7rem, #5e5f5b);
+            em {
+                color: #ff6226;
+                font-style: normal;
+            }
         }
     }
     .notRemind {
