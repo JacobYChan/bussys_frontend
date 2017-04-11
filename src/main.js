@@ -8,17 +8,18 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import store from './store/'
 
-Vue.config.productionTip = false
+
 Vue.use(MintUI);
 
 
 FastClick.attach(document.body);
-router.beforeEach(function (to, from, next) {
+router.beforeEach(function(to, from, next) {
     store.dispatch('updateLoadingStatus', { isLoading: true })
+    console.log("==========")
     next()
 })
-
-router.afterEach(function (to) {
+Vue.config.productionTip = false
+router.afterEach(function(to) {
     store.dispatch('updateLoadingStatus', { isLoading: false })
 })
 

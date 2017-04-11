@@ -18,7 +18,7 @@
 <script>
 import { Indicator } from 'mint-ui';
 import rem from './config/rem.js'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
     name: 'app',
     data() {
@@ -28,19 +28,20 @@ export default {
         }
     },
     computed: {
-        ...mapState({
-            isLoading: state => state.common.isLoading
-        })
+        ...mapGetters([
+            'isLoading'
+        ])
     },
     created() {
-        if (this.isLoading) {
-            Indicator.open({
-                text: '加载中...',
-                spinnerType: 'fading-circle'
-            })
-        }else{
-            Indicator.close();
-        }
+        console.log(typeof(this.isLoading))
+        // if (this.isLoading) {
+        //     Indicator.open({
+        //         text: '加载中...',
+        //         spinnerType: 'fading-circle'
+        //     })
+        // }else{
+        //     Indicator.close();
+        // }
     },
     watch: {
         // 监听 $route 为店内页设置不同的过渡效果

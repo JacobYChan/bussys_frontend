@@ -1,17 +1,18 @@
 import * as types from '../mutation-types';
 
+
 const state = {
-	isLoading: false,
+    isLoading: false,
 }
 
 const actions = {
-	updateLoadingStatus({ commit }, payload) {
+    updateLoadingStatus({ commit }, payload) {
         commit(types.COMMON_LOADING_STATUS, payload)
     },
 }
 
 const getters = {
-	isLoading: state => state.isLoading,
+    isLoading: state => state.isLoading,
 }
 
 const mutations = {
