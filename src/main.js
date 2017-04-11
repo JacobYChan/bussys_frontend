@@ -6,17 +6,28 @@ import router from './router'
 import FastClick from 'fastclick'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+import store from './store/'
 
 Vue.config.productionTip = false
 Vue.use(MintUI);
 
 
 FastClick.attach(document.body);
+router.beforeEach(function (to, from, next) {
+    store.dispatch('updateLoadingStatus', { isLoading: true })
+    next()
+})
+
+router.afterEach(function (to) {
+    store.dispatch('updateLoadingStatus', { isLoading: false })
+})
+
+
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
+    el: '#app',
+    router,
+    template: '<App/>',
+    components: { App }
 })

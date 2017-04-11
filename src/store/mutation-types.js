@@ -1,0 +1,2 @@
+// 公共
+export const COMMON_LOADING_STATUS = 'COMMON_LOADING_STATUS'
