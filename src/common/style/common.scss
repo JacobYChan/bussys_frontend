@@ -132,3 +132,34 @@ body {
 .paddingTop {
     padding-top: 1.95rem;
 }
+
+
+.sub-page {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    background: #eee;
+    height: 100%;
+    width: 100%;
+    /* overflow: hidden; */
+    right: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.outter.hideLeft {
+    opacity: 0.75;
+    transform: translate3d(-100%, 0, 0);
+    transition: 1.0s;
+    overflow: hidden;
+}
+
+.outter {
+    transition: 0.5s;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    /*overflow: hidden;*/
+    /*bottom: 0;*/
+}

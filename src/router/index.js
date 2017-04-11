@@ -16,7 +16,7 @@ export default new Router({
             path: '/',
             name: 'Home1',
             component: Home,
-            redirect:'/home'
+            redirect: '/home'
         },
         {
             path: '/home',
@@ -26,7 +26,7 @@ export default new Router({
         {
             path: '/bus',
             name: 'bus',
-            component:Bus
+            component: Bus
         },
         {
             path: '/mall',
@@ -37,13 +37,21 @@ export default new Router({
             path: '/member',
             name: 'Member',
             component: Member,
-            children: [
-                {
-                    path: 'info',
-                    name: 'MemberInfo',
-                    component: memberInfo,
-                }
-            ]
+            // children: [
+            //     {
+            //         path: 'info',
+            //         name: 'MemberInfo',
+            //         component: memberInfo,
+            //     }
+            // ]
+        },
+        {
+            path: '/member/info',
+            name: 'MemberInfo',
+            components: {
+                default: Member,
+                subPage: memberInfo
+            }
         },
         {
             path: '/message',
