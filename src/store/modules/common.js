@@ -1,5 +1,10 @@
 import * as types from '../mutation-types';
+<<<<<<< HEAD
 import api from '../../fetch/api'
+=======
+
+
+>>>>>>> a28c60d09cc6509cecba1c842e17fd174ad4476c
 const state = {
     isLoading: false,
 }
@@ -17,7 +22,10 @@ const actions = {
 
 const getters = {
     isLoading: state => state.isLoading,
+<<<<<<< HEAD
     // token: state => state.token
+=======
+>>>>>>> a28c60d09cc6509cecba1c842e17fd174ad4476c
 }
 
 const mutations = {
