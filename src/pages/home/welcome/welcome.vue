@@ -60,7 +60,6 @@ export default {
         }
     },
     created() {
-        document.title = "公交车摇一摇";
     },
     methods: {
         check: function () {
