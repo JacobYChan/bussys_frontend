@@ -1,2 +1,3 @@
 // 公共
 export const COMMON_LOADING_STATUS = 'COMMON_LOADING_STATUS'
+// export const COMMON_TOKEN_INFO = 'COMMON_TOKEN_INFO' //获取token

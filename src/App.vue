@@ -33,16 +33,26 @@ export default {
         })
     },
     created() {
-        if (this.isLoading) {
-            Indicator.open({
-                text: '加载中...',
-                spinnerType: 'fading-circle'
-            })
-        }else{
-            Indicator.close();
-        }
+        // Indicator.open('加载中...');
+        // setTimeout(function(){
+        //     Indicator.close();
+        // },1000)
     },
     watch: {
+        isLoading: function () {
+            if (this.isLoading) {
+                this.$nextTick(function () {
+                    Indicator.open({
+                        text: '加载中...',
+                        spinnerType: 'fading-circle'
+                    });
+                })
+            } else {
+                this.$nextTick(function () {
+                    Indicator.close()
+                })
+            }
+        },
         // 监听 $route 为店内页设置不同的过渡效果
         "$route"(to, from) {
             const toDepth = to.path.split('/').length
@@ -54,6 +64,14 @@ export default {
             // 从店面页进入店内页 需要对店内页重新设置离开动效 因为他们处于不同 name 的 router-view
             if (toDepth === 3) {
                 this.leaveAnimate = "animated fadeOutRight"
+            }
+            switch (to.path.split('/')[1]) {
+                case 'member':
+                    document.title = "个人中心";
+                    return "个人中心"
+                case 'message':
+                    document.title = "消息中心";
+                    return "消息中心"
             }
         }
     }

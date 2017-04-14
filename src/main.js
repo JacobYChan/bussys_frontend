@@ -7,13 +7,17 @@ import FastClick from 'fastclick'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import store from './store/'
+import { getStore, setStore, removeStore } from './config/mUtils'
 
 Vue.config.productionTip = false
 Vue.use(MintUI);
 
 
-FastClick.attach(document.body);
+
 router.beforeEach(function (to, from, next) {
+    if (!getStore('token')) {
+        window.location.href=`http://fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl=localhost:8080/`
+    }
     store.dispatch('updateLoadingStatus', { isLoading: true })
     next()
 })
@@ -23,11 +27,10 @@ router.afterEach(function (to) {
 })
 
 
-
+FastClick.attach(document.body)
 /* eslint-disable no-new */
 new Vue({
-    el: '#app',
     router,
-    template: '<App/>',
-    components: { App }
-})
+    store,
+    render: h => h(App)
+}).$mount('#app-box')

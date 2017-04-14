@@ -1,11 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/pages/home/home'
-import Mall from '@/pages/mall/mall'
-import Member from '@/pages/member/member'
-import Message from '@/pages/message/message'
-import Bus from '@/pages/bus/bus'
-import memberInfo from '@/pages/member/member-info/member-info'
 
 Vue.use(Router)
 
@@ -14,29 +8,35 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'Home1',
-            component: Home,
             redirect: '/home'
         },
         {
             path: '/home',
+            meta: {
+                requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+            },
             name: 'Home',
-            component: Home
+            component: resolve => require(["../pages/home/home.vue"], resolve),
+            beforeEnter: (to, from, next) => {
+                setTimeout(function () {
+                    next()
+                }, 200)
+            }
         },
         {
             path: '/bus',
             name: 'bus',
-            component: Bus
+            component: resolve => require(["../pages/bus/bus.vue"], resolve),
         },
         {
             path: '/mall',
             name: 'Mall',
-            component: Mall
+            component: resolve => require(["../pages/mall/mall.vue"], resolve),
         },
         {
             path: '/member',
             name: 'Member',
-            component: Member,
+            component: resolve => require(["../pages/member/member.vue"], resolve),
             // children: [
             //     {
             //         path: 'info',
@@ -49,14 +49,18 @@ export default new Router({
             path: '/member/info',
             name: 'MemberInfo',
             components: {
-                default: Member,
-                subPage: memberInfo
+                subPage: resolve => require(["../pages/member/member-info/member-info.vue"], resolve)
             }
         },
         {
             path: '/message',
             name: 'Message',
-            component: Message
+            component: resolve => require(["../pages/message/message.vue"], resolve),
+            beforeEnter: (to, from, next) => {
+                setTimeout(function () {
+                    next()
+                }, 200)
+            }
         }
     ]
 })
