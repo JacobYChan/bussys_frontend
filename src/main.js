@@ -8,8 +8,10 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import store from './store/'
 import { getStore, setStore, removeStore } from './config/mUtils'
+import filters from './config/filterDate' //将全部过滤器放在 filters/index.js 中便于管理
 
-
+// 注册全局过滤器
+filters(Vue);
 Vue.use(MintUI);
 
 
