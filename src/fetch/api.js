@@ -11,7 +11,7 @@ axios.interceptors.request.use((config) => {
     if (config.method === 'post') {
         config.data = qs.stringify(config.data);
     }
-    console.log(config)
+    // console.log(config)
     return config;
 }, (error) => {
     //      _.toast("错误的传参", 'fail');
@@ -47,8 +47,32 @@ export function fetch(url, params, method) {
 }
 
 export default {
-    // 获取授权
-    // getUser(params) {
-    //     return fetch(`http://fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl=${params}`, {}, 'get')
-    // },
+    //获取消息列表
+    getMessageList() {
+        return fetch('http://yao.jsheyun.net/app/wheelgj/messagelist', { offset: 1000, begin: 0 }, 'post')
+    },
+    //获取消息详情
+    getMessageDetail(id) {
+        return fetch('http://yao.jsheyun.net/app/wheelgj/message', { id: id }, 'post')
+    },
+    //访问信息初始化
+    visitInfoInitial(params) {
+         return fetch('http://yao.jsheyun.net/app/wheelgj/visit', params, 'post')
+    },
+    //获取活动信息
+    getActivityInfo(params) {
+        return fetch('http://yao.jsheyun.net/app/wheelgj/index', params, 'post')
+    },
+    //获取中奖人员列表
+    getMemberList(params) {
+        return fetch('http://yao.jsheyun.net/app/wheelgj/drawlist', params, 'get')
+    },
+    //抽奖
+     getPrize(params) {
+        return fetch('http://yao.jsheyun.net/app/wheelgj/lottery', params, 'post')
+    },
+    //获取用户信息
+     getMemberInfo(params) {
+        return fetch('http://yao.jsheyun.net/app/api/getuserinfobytoken', params, 'post')
+    } 
 }

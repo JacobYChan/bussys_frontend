@@ -27,18 +27,19 @@
                               style="margin-top:0"
                               name="fade">
                 <li :key="index"
-                    v-for="(item,index) in shake_list"
+                    v-for="(item,index) in memberList"
                     class="ellipsis">
                     <section class="head_img">
-                        <img v-lazy="item.head_img">
+                        <img v-lazy="item.headimgurl">
                     </section>
                     <hgroup class="list_info">
-                        <h3>{{item.name}}<span>{{item.action_detail}}</span></h3>
-                        <h5>{{item.action}}</h5>
+                        <h3>{{item.nickname}}</h3>
+                        <h5 v-if="item.gold!==undefined">摇到了1个金币锦囊</h5>
+                        <h5 v-else>摇到了1个卡券锦囊</h5>
                     </hgroup>
                     <hgroup class="list_location">
-                        <h5>{{item.location}}</h5>
-                        <h5>{{item.action_time}}</h5>
+                        <!--<h5>{{item.location}}</h5> -->
+                        <h5>{{item.time}}</h5>
                     </hgroup>
                 </li>
             </transition-group>
@@ -76,6 +77,7 @@ import recommendgood from './recommendGood/recommendGood'
 import welcome from './welcome/welcome'
 import { getStore, setStore, removeStore } from '../../config/mUtils'
 import api from '../../fetch/api'
+import { mapGetters } from 'vuex'
 export default {
     components: {
         footerbar,
@@ -157,12 +159,22 @@ export default {
         this.$nextTick(function () {
             this.ScrollContent = document.getElementById('scroll').getElementsByTagName('ul')[0];
             this.scrollNum = this.ScrollContent.getElementsByTagName('li').length;
-            this.upHeight = 0 - this.ScrollContent.getElementsByTagName('li')[0].scrollHeight;
-
+            if(this.scrollNum!==0){
+                this.upHeight = 0 - this.ScrollContent.getElementsByTagName('li')[0].scrollHeight;
+            }
+            
             if (this.scrollNum > 2) {
                 this.Start();
             }
         })
+    },
+    computed: {
+        ...mapGetters([
+            'activityInfo',
+            'memberList',
+            'prize',
+            'memberInfo'
+        ])
     },
     created() {
         if (getStore('notMind')) {
@@ -173,6 +185,12 @@ export default {
             removeStore('token')
             setStore('token', this.$route.query.token)
         }
+        api.visitInfoInitial({ token: getStore('token'), wid: 174 }).then(res => {
+            if (res.code === 0) {
+                this.$store.dispatch('get_activity_info', { token: getStore('token'), wid: 174 })
+                this.$store.dispatch('get_member_list', { wid: 174 })
+            }
+        })
     },
     methods: {
         Start: function () {
@@ -330,7 +348,7 @@ export default {
     .shake_adv {
         @include wh(8rem, 8rem);
         margin: .6rem auto;
-        padding-bottom: .8rem;
+        // padding-bottom: .8rem;
         img {
             width: 100%;
         }

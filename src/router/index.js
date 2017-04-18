@@ -58,7 +58,14 @@ export default new Router({
                     next()
                 }, 200)
             }
-        }
+        },
+        {
+            path: '/messageDetail/:messageId',
+            name: 'messageDetail',
+            components: {
+                subPage: resolve => require(["../pages/message/messageDetail.vue"], resolve)
+            }
+        },
     ]
 })
 

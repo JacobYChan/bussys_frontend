@@ -7,7 +7,7 @@
             <mt-tab-item id="bus">
                 <span slot="icon" class="iconfont icon-chuxing"></span> 出行
             </mt-tab-item>
-            <mt-tab-item id="home">
+            <mt-tab-item id="home" style="background-color:#fff">
                 <div class="yao-icon">
                     <span slot="icon" class="iconfont icon-snimicyaoyiyao"></span>
                 </div>
