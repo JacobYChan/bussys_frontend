@@ -28,18 +28,19 @@
                               name="fade">
                 <li :key="index"
                     v-for="(item,index) in memberList"
-                    class="ellipsis">
+                    :class="[item.gold ? 'active_gold' : 'active_ticket', 'ellipsis']">
+    
                     <section class="head_img">
                         <img v-lazy="item.headimgurl">
                     </section>
                     <hgroup class="list_info">
                         <h3>{{item.nickname}}</h3>
-                        <h5 v-if="item.gold!==undefined">摇到了1个金币锦囊</h5>
+                        <h5 v-if="item.gold">摇到了1个金币锦囊</h5>
                         <h5 v-else>摇到了1个卡券锦囊</h5>
                     </hgroup>
                     <hgroup class="list_location">
-                        <!--<h5>{{item.location}}</h5> -->
-                        <h5>{{item.time}}</h5>
+                        <!--<h5>江苏省扬州市</h5> -->
+                        <h5>{{item.time|fmtDate}}</h5>
                     </hgroup>
                 </li>
             </transition-group>
@@ -56,7 +57,13 @@
         <transition name="component-fade"
                     mode="out-in">
             <component v-bind:is="currentView"
-                       @close="closePrize"></component>
+                       @close="closePrize"
+                       @toadv="getToAdv(true)"></component>
+        </transition>
+        <transition name="component-fade"
+                    mode="out-in">
+            <adv @closeAdv="getToAdv(false)"
+                 v-show="showAdv"></adv>
         </transition>
         <transition name="component-fade"
                     mode="out-in">
@@ -64,6 +71,9 @@
                  style="z-index: 100;"
                  v-show="show"></div>
         </transition>
+        <audio ref="yao"
+               src="http://yao.jsheyun.net/app/hongxing/voice/v4.mp3"
+               preload="auto"></audio>
     </div>
 </template>
 
@@ -78,6 +88,8 @@ import welcome from './welcome/welcome'
 import { getStore, setStore, removeStore } from '../../config/mUtils'
 import api from '../../fetch/api'
 import { mapGetters } from 'vuex'
+import common from '../../config/common'
+import fleaves from '../../config/fleaves.min.js'
 export default {
     components: {
         footerbar,
@@ -95,74 +107,26 @@ export default {
             prizeNum: 2,
             img: 'http://wx.jsheyun.cn/yao.jpg',
             confirm: false,//遮罩背景是否显示
-            shake_list: [
-                {
-                    head_img: 'http://b.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=f0c5c08030d3d539c16807c70fb7c566/8ad4b31c8701a18bbef9f231982f07082838feba.jpg',
-                    name: '天之骄子',
-                    action: '摇到一个红包',
-                    action_detail: '提现52.33元',
-                    action_time: '2017-3-15 14:00',
-                    location: '扬州市 邗江区'
-                },
-                {
-                    head_img: 'http://b.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=f0c5c08030d3d539c16807c70fb7c566/8ad4b31c8701a18bbef9f231982f07082838feba.jpg',
-                    name: '天之骄子',
-                    action: '摇到一个红包',
-                    action_detail: '提现52.33元',
-                    action_time: '2017-3-15 14:00',
-                    location: '扬州市 邗江区'
-                },
-                {
-                    head_img: 'http://b.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=f0c5c08030d3d539c16807c70fb7c566/8ad4b31c8701a18bbef9f231982f07082838feba.jpg',
-                    name: '天之骄子',
-                    action: '摇到一个红包',
-                    action_detail: '提现52.33元',
-                    action_time: '2017-3-15 14:00',
-                    location: '扬州市 邗江区'
-                },
-                {
-                    head_img: 'http://b.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=f0c5c08030d3d539c16807c70fb7c566/8ad4b31c8701a18bbef9f231982f07082838feba.jpg',
-                    name: '天之骄子',
-                    action: '摇到一个红包',
-                    action_detail: '提现52.33元',
-                    action_time: '2017-3-15 14:00',
-                    location: '扬州市 邗江区'
-                },
-                {
-                    head_img: 'http://b.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=f0c5c08030d3d539c16807c70fb7c566/8ad4b31c8701a18bbef9f231982f07082838feba.jpg',
-                    name: '天之骄子',
-                    action: '摇到一个红包',
-                    action_detail: '提现52.33元',
-                    action_time: '2017-3-15 14:00',
-                    location: '扬州市 邗江区'
-                },
-                {
-                    head_img: 'http://b.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=f0c5c08030d3d539c16807c70fb7c566/8ad4b31c8701a18bbef9f231982f07082838feba.jpg',
-                    name: '天之骄子',
-                    action: '摇到一个红包',
-                    action_detail: '提现52.33元',
-                    action_time: '2017-3-15 14:00',
-                    location: '扬州市 邗江区'
-                }
-            ],
             ScrollContent: null,
             scrollNum: 0,
             upHeight: 0,
             //动态组件
-            currentView: null,
+            currentView: gift,
             //显示遮罩
             show: true,
             showWelcome: true,
+            flag: 1,//控制是否摇一摇
+            showAdv: false
         }
     },
     mounted() {
         this.$nextTick(function () {
             this.ScrollContent = document.getElementById('scroll').getElementsByTagName('ul')[0];
             this.scrollNum = this.ScrollContent.getElementsByTagName('li').length;
-            if(this.scrollNum!==0){
+            if (this.scrollNum !== 0) {
                 this.upHeight = 0 - this.ScrollContent.getElementsByTagName('li')[0].scrollHeight;
             }
-            
+
             if (this.scrollNum > 2) {
                 this.Start();
             }
@@ -185,12 +149,21 @@ export default {
             removeStore('token')
             setStore('token', this.$route.query.token)
         }
+        if (new Date().getTime() > getStore('time')) {
+            removeStore('token')
+        }
         api.visitInfoInitial({ token: getStore('token'), wid: 174 }).then(res => {
             if (res.code === 0) {
                 this.$store.dispatch('get_activity_info', { token: getStore('token'), wid: 174 })
                 this.$store.dispatch('get_member_list', { wid: 174 })
             }
         })
+
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', this.deviceMotionHandler, false);
+        } else {
+            alert('你的手机不支持摇一摇，请点击中间手机进行抽奖');
+        }
     },
     methods: {
         Start: function () {
@@ -248,6 +221,55 @@ export default {
         closePrize: function () {
             this.currentView = "";
             this.show = false;
+        },
+        getToAdv(status) {
+            if (status) {//判断是打开广告还是关闭广告
+                this.showAdv = true;
+            } else {
+                this.show = false;
+                this.showAdv = false;
+                
+            }
+
+        },
+        deviceMotionHandler(eventData) {
+            var acceleration = eventData.accelerationIncludingGravity
+            var curTime = new Date().getTime()
+            var x = 0
+            var y = 0
+            var z = 0
+            var last_x = 0
+            var last_y = 0
+            var last_z = 0
+            var SHAKE_THRESHOLD = 1300
+            var last_update = 0
+            if ((curTime - last_update) > 100) {
+                var diffTime = curTime - last_update;
+                last_update = curTime;
+                x = acceleration.x;
+                y = acceleration.y;
+                z = acceleration.z;
+
+                var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+                if (speed > SHAKE_THRESHOLD) {
+                    this.$refs.yao.play();
+                    if (this.flag == 1) {
+                        this.flag = 0;
+                        setTimeout(this.getjp(), 1000);
+                    }
+                };
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        },
+        getjp() {
+            api.getPrize({ token: getStore('token'), wid: 174 }).then(res => {
+                if (res.code === 0) {
+                    this.show = true;
+
+                }
+            })
         }
     }
 }
@@ -347,8 +369,7 @@ export default {
     }
     .shake_adv {
         @include wh(8rem, 8rem);
-        margin: .6rem auto;
-        // padding-bottom: .8rem;
+        margin: .6rem auto; // padding-bottom: .8rem;
         img {
             width: 100%;
         }
@@ -356,6 +377,7 @@ export default {
     .shake_list {
         height: 12.2rem;
         overflow: hidden;
+        padding: .2rem;
         ul {
             height: 12.2rem;
             overflow: hidden;
@@ -364,8 +386,12 @@ export default {
                 display: flex;
                 padding: .2rem;
                 position: relative;
-                &.active {
+                &.active_gold {
                     @include active();
+                    @include borderRadius(2rem);
+                }
+                &.active_ticket {
+                    @include active(rgba(253, 122, 156, 0.8), #fd7a9c);
                     @include borderRadius(2rem);
                 }
                 &:after {
@@ -396,6 +422,7 @@ export default {
                 .list_info {
                     margin-left: .3rem;
                     line-height: 1.8;
+                    text-align: left;
                     h3 {
                         @include sc(.5rem, #515e8b);
                         span {
@@ -414,8 +441,9 @@ export default {
                     }
                 }
                 .list_location {
-                    padding-left: .5rem;
-                    line-height: 1.8;
+                    padding-right: 1rem;
+                    line-height: 3.5;
+                    text-align: right;
                     flex: 1;
                     h5 {
                         font-weight: normal;

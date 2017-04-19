@@ -1,16 +1,20 @@
 <template>
     <div>
-        <div class="goldCoin" v-if="status==1">
+        <div class="goldCoin"
+             v-if="status==1">
             <section class="head margin">
                 <section class="logo margin"><img v-lazy="logo"></section>
                 <h3>{{name}}</h3>
             </section>
             <h4>给您发了一堆金币</h4>
-            <section class="open" @click="openGoldcoin"><img src="../../../common/images/kai.png"></section>
+            <section class="open"
+                     @click="openGoldcoin"><img src="../../../common/images/kai.png"></section>
             <p>点击广告得金币</p>
-            <section class="close" @click="close"><span>×</span></section>
+            <section class="close"
+                     @click="close"><span>×</span></section>
         </div>
-        <div class="coinResult" v-else>
+        <div class="coinResult"
+             v-else>
             <section class="blank">
                 <div class="blank_content"></div>
             </section>
@@ -21,7 +25,8 @@
                 <span>×{{coin_Amount}}</span>金币
             </section>
             <p>已存入您的金币口袋</p>
-            <section class="close" @click="close"><span>×</span></section>
+            <section class="close"
+                     @click="close"><span>×</span></section>
         </div>
     </div>
 </template>
@@ -44,7 +49,10 @@ export default {
     },
     methods: {
         openGoldcoin: function () {
-            this.status = 2;
+            this.$emit('toadv');
+            setTimeout(() => {
+                this.status = 2;
+            }, 1000)
         },
         close: function () {
             this.$emit('close');

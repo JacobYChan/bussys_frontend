@@ -44,7 +44,10 @@
         },
         methods:{
             openRedpacket:function(){
-                this.status = 2;
+                this.$emit('toadv');
+                setTimeout(()=>{
+                     this.status=2;
+                },1000)
             },
             close:function(){
                 this.$emit('close');

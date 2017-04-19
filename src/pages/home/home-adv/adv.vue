@@ -17,11 +17,11 @@
             }
         },
         created(){
-            document.title="公交车摇一摇";
+           
         },
         methods:{
             close:function(){
-                this.$emit('close');
+                this.$emit('closeAdv');
             }
         }
     }
@@ -32,11 +32,11 @@
         @include center;
         z-index: 101;
         background-color: #fff;
-        @include wh(11rem, 15rem);
+        @include wh(11rem, 16rem);
         .open{
-            @include wh(11rem, 15rem);
+            @include wh(11rem, 16rem);
             img{
-                @include wh(11rem, 15rem);
+                @include wh(11rem, 16rem);
             }
         }
         .close {
