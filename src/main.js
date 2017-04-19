@@ -17,7 +17,8 @@ Vue.use(MintUI);
 
 router.beforeEach(function (to, from, next) {
     if (!getStore('token')) {
-        window.location.href = `http://fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl=localhost:8080/`
+        var url = encodeURIComponent("fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl2=localhost:8080");
+        window.location.href = `http://yao.jsheyun.net/app/api/grantgetyaotoken?jumpurl=${url}`
         removeStore('time')
         setStore('time',new Date().getTime()+900000)
     }

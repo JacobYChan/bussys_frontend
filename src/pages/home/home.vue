@@ -71,6 +71,8 @@
                  style="z-index: 100;"
                  v-show="show"></div>
         </transition>
+        <div style="position:fixed;color:red;bottom:20%;left:20%"
+             @click="getjp()">测试摇一摇</div>
         <audio ref="yao"
                src="http://yao.jsheyun.net/app/hongxing/voice/v4.mp3"
                preload="auto"></audio>
@@ -85,6 +87,7 @@ import gift from './home-gift/gift'
 import adv from './home-adv/adv'
 import recommendgood from './recommendGood/recommendGood'
 import welcome from './welcome/welcome'
+import fail from './fail'
 import { getStore, setStore, removeStore } from '../../config/mUtils'
 import api from '../../fetch/api'
 import { mapGetters } from 'vuex'
@@ -98,7 +101,8 @@ export default {
         gift,
         adv,
         recommendgood,
-        welcome
+        welcome,
+        fail
     },
     data() {
         return {
@@ -111,7 +115,7 @@ export default {
             scrollNum: 0,
             upHeight: 0,
             //动态组件
-            currentView: gift,
+            currentView: '',
             //显示遮罩
             show: true,
             showWelcome: true,
@@ -228,7 +232,7 @@ export default {
             } else {
                 this.show = false;
                 this.showAdv = false;
-                
+
             }
 
         },
@@ -264,12 +268,17 @@ export default {
             }
         },
         getjp() {
-            api.getPrize({ token: getStore('token'), wid: 174 }).then(res => {
-                if (res.code === 0) {
-                    this.show = true;
-
+            this.$store.dispatch('get_prize', { token: getStore('token'), wid: 174 })
+            this.show = true;
+            if(this.prize.code===0){
+                if(this.prize.type===1){
+                    this.currentView='gift'
+                }else if(this.prize.type===5){
+                    this.currentView="goldcoin"
                 }
-            })
+            }else {
+                this.currentView="fail"
+            }
         }
     }
 }

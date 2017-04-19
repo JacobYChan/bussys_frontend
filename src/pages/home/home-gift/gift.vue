@@ -3,8 +3,8 @@
         <section class="head margin">
             <h3>恭喜您摇到一个礼品！</h3>
         </section>
-        <section class="good_img"><img v-lazy="good_img"></section>
-        <p class="ellipsis">{{good_title}}</p>
+        <section class="good_img"><img v-lazy="prize.img"></section>
+        <p class="ellipsis">{{prize.title}}</p>
         <mt-button type="primary"
                    size="large"
                    @click="getPrize">立即领取</mt-button>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     components: {
 
@@ -24,6 +25,11 @@ export default {
             good_title: '风影去屑洗发露水润丝滑型（200ml）',
             name: '广电来摇吧',
         }
+    },
+    computed: {
+        ...mapGetters([
+            'prize'
+        ])
     },
     created() {
 

@@ -3,8 +3,8 @@
         <div class="goldCoin"
              v-if="status==1">
             <section class="head margin">
-                <section class="logo margin"><img v-lazy="logo"></section>
-                <h3>{{name}}</h3>
+                <section class="logo margin"><img v-lazy="prize.img"></section>
+                <h3>{{prize.title}}</h3>
             </section>
             <h4>给您发了一堆金币</h4>
             <section class="open"
@@ -18,11 +18,11 @@
             <section class="blank">
                 <div class="blank_content"></div>
             </section>
-            <section class="logo margin"><img v-lazy="logo"></section>
-            <h3>{{name}}</h3>
+            <section class="logo margin"><img v-lazy="prize.img"></section>
+            <h3>{{prize.title}}</h3>
             <section class="coin_Amount">
                 <i class="iconfont icon-duobaobi"></i>
-                <span>×{{coin_Amount}}</span>金币
+                <span>×{{prize.money}}</span>金币
             </section>
             <p>已存入您的金币口袋</p>
             <section class="close"
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     components: {
 
@@ -46,6 +47,11 @@ export default {
     },
     created() {
         document.title = "公交车摇一摇";
+    },
+    computed: {
+        ...mapGetters([
+            'prize'
+        ])
     },
     methods: {
         openGoldcoin: function () {
