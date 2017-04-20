@@ -7,7 +7,7 @@
         <p class="ellipsis">{{prize.title}}</p>
         <mt-button type="primary"
                    size="large"
-                   @click="getPrize">立即领取</mt-button>
+                   @click="getPrize">立即使用</mt-button>
         <section class="close"
                  @click="close"><span>×</span></section>
     </div>
@@ -21,9 +21,7 @@ export default {
     },
     data() {
         return {
-            good_img: 'http://fhg.jsheyun.net/upload/shop/store/goods/24/24_05338317633906821_480.png',
-            good_title: '风影去屑洗发露水润丝滑型（200ml）',
-            name: '广电来摇吧',
+
         }
     },
     computed: {
@@ -36,7 +34,7 @@ export default {
     },
     methods: {
         getPrize: function () {
-            this.$emit('toadv');
+            this.$emit('toadv',true,'');
         },
         close: function () {
             this.$emit('close');

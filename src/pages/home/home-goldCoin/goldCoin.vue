@@ -3,7 +3,7 @@
         <div class="goldCoin"
              v-if="status==1">
             <section class="head margin">
-                <section class="logo margin"><img v-lazy="prize.img"></section>
+                <section class="logo margin"><img :src="prize.img"></section>
                 <h3>{{prize.title}}</h3>
             </section>
             <h4>给您发了一堆金币</h4>
@@ -18,7 +18,7 @@
             <section class="blank">
                 <div class="blank_content"></div>
             </section>
-            <section class="logo margin"><img v-lazy="prize.img"></section>
+            <section class="logo margin"><img :src="prize.img"></section>
             <h3>{{prize.title}}</h3>
             <section class="coin_Amount">
                 <i class="iconfont icon-duobaobi"></i>
@@ -39,14 +39,14 @@ export default {
     },
     data() {
         return {
-            logo: 'http://wx.jsheyun.cn/logo.png',
-            name: '广电来摇吧',
-            coin_Amount: '100',
+            // logo: 'http://wx.jsheyun.cn/logo.png',
+            // name: '广电来摇吧',
+            // coin_Amount: '100',
             status: 1,
         }
     },
     created() {
-        document.title = "公交车摇一摇";
+
     },
     computed: {
         ...mapGetters([
@@ -55,7 +55,7 @@ export default {
     },
     methods: {
         openGoldcoin: function () {
-            this.$emit('toadv');
+            this.$emit('toadv',true,'');
             setTimeout(() => {
                 this.status = 2;
             }, 1000)

@@ -3,7 +3,7 @@
         <mt-header title="我"></mt-header>
         <mt-cell :title="memberInfo.nickname">
             <img slot="icon"
-                 v-lazy="memberInfo.headimgurl"
+                 :src="memberInfo.headimgurl"
                  width="60"
                  height="60">
         </mt-cell>

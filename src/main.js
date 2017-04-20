@@ -20,9 +20,12 @@ router.beforeEach(function (to, from, next) {
         var url = encodeURIComponent("fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl2=localhost:8080");
         window.location.href = `http://yao.jsheyun.net/app/api/grantgetyaotoken?jumpurl=${url}`
         removeStore('time')
-        setStore('time',new Date().getTime()+900000)
+        setStore('time', new Date().getTime() + 900000)
     }
     store.dispatch('updateLoadingStatus', { isLoading: true })
+    store.dispatch('get_activity_info', { token: getStore('token'), wid: 174 })
+    store.dispatch('get_member_list', { wid: 174 })
+    
     next()
 })
 Vue.config.productionTip = false

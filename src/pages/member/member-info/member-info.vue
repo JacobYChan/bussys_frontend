@@ -9,7 +9,7 @@
     
         <mt-cell title="头像">
             <img slot="icon"
-                 v-lazy="memberInfo.headimgurl"
+                 :src="memberInfo.headimgurl"
                  width="60"
                  height="60">
         </mt-cell>

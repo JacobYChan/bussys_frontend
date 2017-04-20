@@ -17,7 +17,7 @@ export default new Router({
             beforeEnter: (to, from, next) => {
                 setTimeout(function () {
                     next()
-                }, 200)
+                }, 700)
             }
         },
         {
@@ -53,11 +53,11 @@ export default new Router({
             path: '/message',
             name: 'Message',
             component: resolve => require(["../pages/message/message.vue"], resolve),
-            beforeEnter: (to, from, next) => {
-                setTimeout(function () {
-                    next()
-                }, 200)
-            }
+            // beforeEnter: (to, from, next) => {
+            //     setTimeout(function () {
+            //         next()
+            //     }, 200)
+            // }
         },
         {
             path: '/messageDetail/:messageId',

@@ -18,7 +18,7 @@
             </section>
         </hgroup>
         <div class="shake_adv">
-            <img v-lazy="img">
+            <img v-lazy="activityInfo.page_gif">
         </div>
         <!--名单滚动区域 -->
         <div class="shake_list"
@@ -31,7 +31,7 @@
                     :class="[item.gold ? 'active_gold' : 'active_ticket', 'ellipsis']">
     
                     <section class="head_img">
-                        <img v-lazy="item.headimgurl">
+                        <img :src="item.headimgurl">
                     </section>
                     <hgroup class="list_info">
                         <h3>{{item.nickname}}</h3>
@@ -58,11 +58,11 @@
                     mode="out-in">
             <component v-bind:is="currentView"
                        @close="closePrize"
-                       @toadv="getToAdv(true)"></component>
+                       @toadv="getToAdv"></component>
         </transition>
         <transition name="component-fade"
                     mode="out-in">
-            <adv @closeAdv="getToAdv(false)"
+            <adv @closeAdv="getToAdv"
                  v-show="showAdv"></adv>
         </transition>
         <transition name="component-fade"
@@ -90,9 +90,10 @@ import welcome from './welcome/welcome'
 import fail from './fail'
 import { getStore, setStore, removeStore } from '../../config/mUtils'
 import api from '../../fetch/api'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import common from '../../config/common'
 import fleaves from '../../config/fleaves.min.js'
+import { Toast } from 'mint-ui'
 export default {
     components: {
         footerbar,
@@ -109,7 +110,6 @@ export default {
             goldCount: 4.3,
             redPacketCount: 444,
             prizeNum: 2,
-            img: 'http://wx.jsheyun.cn/yao.jpg',
             confirm: false,//遮罩背景是否显示
             ScrollContent: null,
             scrollNum: 0,
@@ -131,20 +131,21 @@ export default {
                 this.upHeight = 0 - this.ScrollContent.getElementsByTagName('li')[0].scrollHeight;
             }
 
-            if (this.scrollNum > 2) {
+            if (this.scrollNum > 4) {
                 this.Start();
             }
         })
     },
     computed: {
-        ...mapGetters([
-            'activityInfo',
-            'memberList',
-            'prize',
-            'memberInfo'
-        ])
+        ...mapState({
+            'activityInfo':state=>state.activity.activityInfo,
+            'memberList':state=>state.activity.memberList,
+            'prize':state=>state.activity.prize,
+            'memberInfo':state=>state.memberInfo.memberInfo
+        })
     },
     created() {
+
         if (getStore('notMind')) {
             this.showWelcome = false;
             this.show = false;
@@ -157,9 +158,13 @@ export default {
             removeStore('token')
         }
         api.visitInfoInitial({ token: getStore('token'), wid: 174 }).then(res => {
-            if (res.code === 0) {
-                this.$store.dispatch('get_activity_info', { token: getStore('token'), wid: 174 })
-                this.$store.dispatch('get_member_list', { wid: 174 })
+            if (res.code !== 0) {
+                setTimeout(function () {
+                    Toast({
+                        message: res.msg,
+                        iconClass: 'icon iconfont icon-iconsb iconsb'
+                    })
+                }, 1000)
             }
         })
 
@@ -226,13 +231,15 @@ export default {
             this.currentView = "";
             this.show = false;
         },
-        getToAdv(status) {
+        getToAdv(status, url) {
             if (status) {//判断是打开广告还是关闭广告
                 this.showAdv = true;
             } else {
-                this.show = false;
                 this.showAdv = false;
-
+                if (this.prize.type === 1) {
+                    this.currentView=""
+                     window.location.href=url
+                }
             }
 
         },
@@ -268,24 +275,26 @@ export default {
             }
         },
         getjp() {
-            this.$store.dispatch('get_prize', { token: getStore('token'), wid: 174 })
-            this.show = true;
-            if(this.prize.code===0){
-                if(this.prize.type===1){
-                    this.currentView='gift'
-                }else if(this.prize.type===5){
-                    this.currentView="goldcoin"
+            this.$store.dispatch('get_prize', { token: getStore('token'), wid: 174 }).then(() => {
+                this.show = true;
+console.log(this.prize)
+                if (this.prize.code === 0) {
+                    if (this.prize.type === 1) {
+                        this.currentView = 'gift'
+                    } else if (this.prize.type === 5) {
+                        this.currentView = "goldcoin"
+                    }
+                } else {
+                    this.currentView = "fail"
                 }
-            }else {
-                this.currentView="fail"
-            }
+            })
         }
     }
 }
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '../../common/style/mixin';
 .fade-enter,
 .fade-leave-active {
@@ -306,7 +315,13 @@ export default {
     opacity: 0;
 }
 
+.iconsb,
+.icon-success {
+    font-size: 1.2rem !important;
+}
+
 #shake {
+
     background: #fef3f1;
     min-height: 100%;
     .myPrize {
@@ -378,7 +393,7 @@ export default {
     }
     .shake_adv {
         @include wh(8rem, 8rem);
-        margin: .6rem auto; // padding-bottom: .8rem;
+        margin: .6rem auto 0 auto; // padding-bottom: .8rem;
         img {
             width: 100%;
         }
@@ -388,7 +403,7 @@ export default {
         overflow: hidden;
         padding: .2rem;
         ul {
-            height: 12.2rem;
+            height: 12rem;
             overflow: hidden;
             li {
                 transition: all 1s;

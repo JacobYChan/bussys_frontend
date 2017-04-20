@@ -40,7 +40,8 @@ const mutations = {
         state.memberList = res.data
     },
     [types.GET_PRIZE](state, res) {
-        state.prize = res.data
+        state.prize = res
+console.log(state.prize)
     },
 }
 
