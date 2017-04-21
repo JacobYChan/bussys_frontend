@@ -71,8 +71,7 @@
                  style="z-index: 100;"
                  v-show="show"></div>
         </transition>
-        <div style="position:fixed;color:red;bottom:20%;left:20%"
-             @click="getjp()">测试摇一摇</div>
+    
         <audio ref="yao"
                src="http://yao.jsheyun.net/app/hongxing/voice/v4.mp3"
                preload="auto"></audio>
@@ -91,8 +90,6 @@ import fail from './fail'
 import { getStore, setStore, removeStore } from '../../config/mUtils'
 import api from '../../fetch/api'
 import { mapState } from 'vuex'
-import common from '../../config/common'
-import fleaves from '../../config/fleaves.min.js'
 import { Toast } from 'mint-ui'
 export default {
     components: {
@@ -120,8 +117,41 @@ export default {
             show: true,
             showWelcome: true,
             flag: 1,//控制是否摇一摇
-            showAdv: false
+            showAdv: false,
+            x: 0,
+            y: 0,
+            z: 0,
+            last_x: 0,
+            last_y: 0,
+            last_z: 0,
+            SHAKE_THRESHOLD: 1300,
+            last_update: 0
         }
+    },
+
+    computed: {
+        ...mapState({
+            'activityInfo': state => state.activity.activityInfo,
+            'memberList': state => state.activity.memberList,
+            'prize': state => state.activity.prize,
+            'memberInfo': state => state.memberInfo.memberInfo
+        })
+    },
+    created() {
+
+        if (getStore('notMind')) {
+            this.showWelcome = false;
+            this.show = false;
+        }
+        // if (this.$route.query.token) {
+        //     setStore('token', this.$route.query.token)
+        //     //console.log(this.$route.query.token + "路由token")
+        // }
+
+        // if (getStore('token')===undefined) {
+        //     setStore('token', this.$route.query.token)
+        // }
+
     },
     mounted() {
         this.$nextTick(function () {
@@ -134,45 +164,12 @@ export default {
             if (this.scrollNum > 4) {
                 this.Start();
             }
-        })
-    },
-    computed: {
-        ...mapState({
-            'activityInfo':state=>state.activity.activityInfo,
-            'memberList':state=>state.activity.memberList,
-            'prize':state=>state.activity.prize,
-            'memberInfo':state=>state.memberInfo.memberInfo
-        })
-    },
-    created() {
-
-        if (getStore('notMind')) {
-            this.showWelcome = false;
-            this.show = false;
-        }
-        if (this.$route.query.token) {
-            removeStore('token')
-            setStore('token', this.$route.query.token)
-        }
-        if (new Date().getTime() > getStore('time')) {
-            removeStore('token')
-        }
-        api.visitInfoInitial({ token: getStore('token'), wid: 174 }).then(res => {
-            if (res.code !== 0) {
-                setTimeout(function () {
-                    Toast({
-                        message: res.msg,
-                        iconClass: 'icon iconfont icon-iconsb iconsb'
-                    })
-                }, 1000)
+            if (window.DeviceMotionEvent) {
+                window.addEventListener('devicemotion', this.deviceMotionHandler, false)
+            } else {
+                alert('你的手机不支持摇一摇，请点击中间手机进行抽奖')
             }
         })
-
-        if (window.DeviceMotionEvent) {
-            window.addEventListener('devicemotion', this.deviceMotionHandler, false);
-        } else {
-            alert('你的手机不支持摇一摇，请点击中间手机进行抽奖');
-        }
     },
     methods: {
         Start: function () {
@@ -230,6 +227,7 @@ export default {
         closePrize: function () {
             this.currentView = "";
             this.show = false;
+            this.flag = 1;
         },
         getToAdv(status, url) {
             if (status) {//判断是打开广告还是关闭广告
@@ -237,8 +235,9 @@ export default {
             } else {
                 this.showAdv = false;
                 if (this.prize.type === 1) {
-                    this.currentView=""
-                     window.location.href=url
+                    this.currentView = ""
+                    window.location.href = url
+                    this.flag = 1;
                 }
             }
 
@@ -246,38 +245,41 @@ export default {
         deviceMotionHandler(eventData) {
             var acceleration = eventData.accelerationIncludingGravity
             var curTime = new Date().getTime()
-            var x = 0
-            var y = 0
-            var z = 0
-            var last_x = 0
-            var last_y = 0
-            var last_z = 0
-            var SHAKE_THRESHOLD = 1300
-            var last_update = 0
-            if ((curTime - last_update) > 100) {
-                var diffTime = curTime - last_update;
-                last_update = curTime;
-                x = acceleration.x;
-                y = acceleration.y;
-                z = acceleration.z;
+            if ((curTime - this.last_update) > 100) {
+                var diffTime = curTime - this.last_update;
+                this.last_update = curTime;
+                this.x = acceleration.x;
+                this.y = acceleration.y;
+                this.z = acceleration.z;
+                var speed = Math.abs(this.x + this.y + this.z - this.last_x - this.last_y - this.last_z) / diffTime * 10000;
 
-                var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
-                if (speed > SHAKE_THRESHOLD) {
+                if (speed > this.SHAKE_THRESHOLD && this.show === false) {
                     this.$refs.yao.play();
                     if (this.flag == 1) {
+                        setTimeout(() => {
+                            this.getjp()
+                        }, 200);
                         this.flag = 0;
-                        setTimeout(this.getjp(), 1000);
                     }
-                };
-                last_x = x;
-                last_y = y;
-                last_z = z;
+                }
+                this.last_x = this.x;
+                this.last_y = this.y;
+                this.last_z = this.z;
             }
         },
         getjp() {
+            api.visitInfoInitial({ token: getStore('token'), wid: 174 }).then(res => {
+                if (res.code !== 0) {
+                    setTimeout(function () {
+                        Toast({
+                            message: res.msg,
+                            iconClass: 'icon iconfont icon-iconsb iconsb'
+                        })
+                    }, 1000)
+                }
+            })
             this.$store.dispatch('get_prize', { token: getStore('token'), wid: 174 }).then(() => {
                 this.show = true;
-console.log(this.prize)
                 if (this.prize.code === 0) {
                     if (this.prize.type === 1) {
                         this.currentView = 'gift'

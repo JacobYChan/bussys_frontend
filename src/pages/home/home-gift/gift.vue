@@ -105,8 +105,8 @@ export default {
         span {
             @include sc(1.2rem, #fbc658);
             position: absolute;
-            top: -.4rem;
-            right: .04rem;
+            top: -.2.5rem;
+            right: .1.5rem;
         }
     }
 }

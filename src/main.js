@@ -16,20 +16,51 @@ Vue.use(MintUI);
 
 
 router.beforeEach(function (to, from, next) {
-    if (!getStore('token')) {
-        var url = encodeURIComponent("fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl2=localhost:8080");
-        window.location.href = `http://yao.jsheyun.net/app/api/grantgetyaotoken?jumpurl=${url}`
-        removeStore('time')
+    // if (getStore('token') === undefined || getStore('token') === null) {
+    //     if (to.query.token) {
+    //         setStore('token', to.query.token)
+    //     }
+    //     let url = encodeURIComponent("fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl2=localhost:8080/home")
+    //     window.location.replace(`http://yao.jsheyun.net/app/api/grantgetyaotoken?jumpurl=${url}`)
+    //     setStore('time', new Date().getTime() + 900000)
+    //     console.log(to.query.token + "有没有token")
+
+    // }
+    if (to.query.token) {
+        setStore('token', to.query.token)
         setStore('time', new Date().getTime() + 900000)
     }
+
+    console.log(getStore('token') + "---------------")
+
+
+
+    if (new Date().getTime() > getStore('time')) {
+        removeStore('token')
+        removeStore('time')
+    }
+
+    // else {
+    //     if (new Date().getTime() > getStore('time')) {
+    //         removeStore('token')
+    //            removeStore('time')
+    //     }
+    // }
+    // console.log(getStore('token') + "缓存token")
     store.dispatch('updateLoadingStatus', { isLoading: true })
     store.dispatch('get_activity_info', { token: getStore('token'), wid: 174 })
     store.dispatch('get_member_list', { wid: 174 })
-    
-    next()
+    if (getStore('token') === null || getStore('token') === undefined) {
+        let url = encodeURIComponent("fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl2=bus.jsheyun.com/home")
+        window.location.replace(`http://yao.jsheyun.net/app/api/grantgetyaotoken?jumpurl=${url}`)
+    } else {
+        next()
+    }
+
 })
 Vue.config.productionTip = false
 router.afterEach(function (to) {
+
     store.dispatch('updateLoadingStatus', { isLoading: false })
 })
 
