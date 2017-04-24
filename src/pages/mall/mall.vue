@@ -1,28 +1,36 @@
 <template>
     <div>
-    <mt-header title="个人中心" fixed></mt-header>
-    
-       <footbar></footbar>
+        <mt-header title="商城"
+                   fixed>
+            <router-link to="/"
+                         slot="left">
+                <mt-button icon="back">返回</mt-button>
+            </router-link>
+        </mt-header>
+        <iframe src="//fhg.jsheyun.net/"
+                scrolling="yes"
+                frameborder="0"
+                class="mall"></iframe>
     </div>
 </template>
 
 <script>
-import footbar from '../../components/footer/footer.vue'
-    export default {
-         components: {
-            footbar
-        },
-        data(){
-            return{
-                
-            }
-        },
-        created(){
-            document.title="公交车摇一摇";
+
+export default {
+    data() {
+        return {
+
         }
+    },
+    created() {
+
     }
+}
 </script>
 <style lang="scss" scoped>
-
-
+    .mall{
+        height: 93.5%;
+        width: 100%;
+        margin-top: 40px;
+    }
 </style>

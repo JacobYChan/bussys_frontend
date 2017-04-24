@@ -24,7 +24,7 @@
             <h3>{{prize.title}}</h3>
             <section class="packet_Amount">
                 <div>红包</div>
-                <span>{{prize.money}}</span>元
+                <span>{{prize.money|filterMoney}}</span>元
             </section>
             <p>已存入您的财富账户</p>
             <section class="close"
@@ -47,6 +47,12 @@ export default {
             // name: '广电来摇吧',
             status: 1,
             // packet_Amount: '5.94',
+        }
+    },
+    filters:{
+        filterMoney(value){
+            newValue = value/100
+            return newValue.toFixed(2)
         }
     },
     created() {

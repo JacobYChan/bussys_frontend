@@ -12,7 +12,7 @@
                     <span slot="icon" class="iconfont icon-snimicyaoyiyao"></span>
                 </div>
             </mt-tab-item>
-            <mt-tab-item id="mall">
+            <mt-tab-item id="mall/index">
                 <span slot="icon" class="iconfont icon-shangcheng"></span> 商城
             </mt-tab-item>
             <mt-tab-item id="member">

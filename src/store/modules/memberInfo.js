@@ -3,9 +3,9 @@ import api from '../../fetch/api'
 
 const state = {
     memberInfo: {},
-    goldCoin: [],
+    goldCoin: 0,
     tickets: 0,
-    redPacket: [],
+    redPacket: 0,
 
 }
 
@@ -46,11 +46,11 @@ const mutations = {
     [types.GET_GOLD_COIN](state, res) {
         state.goldCoin = res.result
     },
-    [types.GET_GOLD_COIN](state, res) {
+    [types.GET_RED_PACKET](state, res) {
         state.redPacket = res.result
     },
     [types.GET_TICKETS_AMOUNT](state, res) {
-        state.tickets = res.nums
+        state.tickets = res.data
     }
 }
 

@@ -77,11 +77,11 @@ export default {
     },
     //获取用户金币数量
     getMemberGoldCoin(params) {
-        return fetch('http://yao.jsheyun.net/app/api/user/yaofhb', params, 'get')
+        return fetch('http://fhg.jsheyun.net/api/user/yaofhb', params, 'get')
     },
     //获取用户红包数量
     getMemberRedPacket(params) {
-        return fetch('http://yao.jsheyun.net/app/api/user/yaohb', params, 'get')
+        return fetch('http://fhg.jsheyun.net/api/user/yaohb', params, 'get')
     },
     //获取用户卡券数量
     getMemberTickets(params) {

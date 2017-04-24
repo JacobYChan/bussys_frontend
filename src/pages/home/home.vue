@@ -4,16 +4,16 @@
             <section class="myPrize_gold">
                 <div class="gold_icon"><i class="iconfont icon-jinbi"></i></div>
                 <span>金币</span>
-                <label>{{goldCoin.goldcoin}}元</label>
+                <label>{{goldCoin|filterValue}}个</label>
             </section>
             <section class="myPrize_redPacket">
                 <div class="redPacket_icon"><i class="iconfont icon-hongbao"></i></div>
                 <span>红包</span>
-                <label>{{redPacket.pdr_amount}}元</label>
+                <label>{{redPacket|filterValue}}元</label>
             </section>
             <section class="myPrize_prize">
                 <div class="prize_icon"><i class="iconfont icon-jiang"></i></div>
-                <span>奖品</span>
+                <span>卡券</span>
                 <label>{{tickets}}张</label>
             </section>
         </hgroup>
@@ -76,7 +76,7 @@
                src="http://yao.jsheyun.net/app/hongxing/voice/v4.mp3"
                preload="auto"></audio>
     
-        <div @click="getjp"
+        <div @click="getjp()"
              style="position:absolute;left:20%;bottom:20%; color:red">
             测试摇一摇
         </div>
@@ -94,7 +94,7 @@ import welcome from './welcome/welcome'
 import fail from './fail'
 import { getStore, setStore, removeStore } from '../../config/mUtils'
 import api from '../../fetch/api'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import { Toast } from 'mint-ui'
 export default {
     components: {
@@ -107,11 +107,13 @@ export default {
         welcome,
         fail
     },
+    filters: {
+        filterValue(value) {
+            return parseInt(value)
+        }
+    },
     data() {
         return {
-            // goldCount: 4.3,
-            // redPacketCount: 444,
-            // prizeNum: 2,
             confirm: false,//遮罩背景是否显示
             ScrollContent: null,
             scrollNum: 0,
@@ -135,15 +137,15 @@ export default {
     },
 
     computed: {
-        ...mapGetters([
-            'activityInfo',
-            'prize',
-            'memberList',
-            'memberInfo',
-            'goldCoin',
-            'redPacket',
-            'tickets'
-        ])
+        ...mapState({
+            activityInfo: state => state.activity.activityInfo,
+            prize: state => state.activity.prize,
+            memberList: state => state.activity.memberList,
+            memberInfo: state => state.memberInfo.memberInfo,
+            goldCoin:state => state.memberInfo.goldCoin,
+            redPacket:state => state.memberInfo.redPacket,
+            tickets:state => state.memberInfo.tickets
+        })
     },
     created() {
         if (getStore('notMind')) {
@@ -160,10 +162,13 @@ export default {
                 }, 1000)
             }
         })
-        this.$store.dispatch('get_member_info', { token: getStore('token') }).then(() => {
+        this.$store.dispatch('get_member_info', { token: getStore('token') })
+
+        setTimeout(() => {
+            console.log(this.memberInfo.fhid + "用户ID")
             this.$store.dispatch('get_member_gold_coin', { member_id: this.memberInfo.fhid })
             this.$store.dispatch('get_member_red_packet', { member_id: this.memberInfo.fhid })
-        })
+        }, 800)
         this.$store.dispatch('get_member_ticket', { token: getStore('token'), wid: 174 })
 
 
@@ -292,22 +297,27 @@ export default {
             }
         },
         getjp() {
-            this.$store.dispatch('get_prize', { token: getStore('token'), wid: 174 }).then(() => {
+            this.$store.dispatch('get_prize', { token: getStore('token'), wid: 174 });
+            setTimeout(() => {
                 this.show = true;
+                console.log(this.prize)
                 if (this.prize.code === 0) {
                     if (this.prize.type === 1) {
                         this.currentView = 'gift'
+                        this.$store.dispatch('get_member_ticket', { token: getStore('token'), wid: 174 })
                     } else if (this.prize.type === 5) {
-                        if (this.prize.crptype === 2) {
+                        if (this.prize.crptype === '2') {
                             this.currentView = "goldcoin"
-                        } else if (this.prize.crptype === 3) {
+                            this.$store.dispatch('get_member_gold_coin', { member_id: this.memberInfo.fhid })
+                        } else if (this.prize.crptype === '3') {
                             this.currentView = "redpacket"
+                            this.$store.dispatch('get_member_red_packet', { member_id: this.memberInfo.fhid })
                         }
                     }
                 } else {
                     this.currentView = "fail"
                 }
-            })
+            }, 2000)
         }
     }
 }
@@ -419,11 +429,11 @@ export default {
         }
     }
     .shake_list {
-        height: 12.2rem;
+        height: 11.7rem;
         overflow: hidden;
         padding: .2rem;
         ul {
-            height: 12rem;
+            height: 11.5rem;
             overflow: hidden;
             li {
                 transition: all 1s;
@@ -457,15 +467,15 @@ export default {
                     }
                 }
                 .head_img {
-                    @include wh(2rem, 2rem);
+                    @include wh(1.5rem, 1.5rem);
                     img {
-                        @include wh(2rem, 2rem);
+                        @include wh(1.5rem, 1.5rem);
                         @include borderRadius(50%);
                     }
                 }
                 .list_info {
                     margin-left: .3rem;
-                    line-height: 1.8;
+                    line-height: 1.5;
                     text-align: left;
                     h3 {
                         @include sc(.5rem, #515e8b);
@@ -486,7 +496,7 @@ export default {
                 }
                 .list_location {
                     padding-right: 1rem;
-                    line-height: 3.5;
+                    line-height: 3;
                     text-align: right;
                     flex: 1;
                     h5 {

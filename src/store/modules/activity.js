@@ -41,7 +41,6 @@ const mutations = {
     },
     [types.GET_PRIZE](state, res) {
         state.prize = res
-console.log(state.prize)
     },
 }
 

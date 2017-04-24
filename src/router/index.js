@@ -26,9 +26,11 @@ export default new Router({
             component: resolve => require(["../pages/bus/bus.vue"], resolve),
         },
         {
-            path: '/mall',
+            path: '/mall/index',
             name: 'Mall',
-            component: resolve => require(["../pages/mall/mall.vue"], resolve),
+            components: {
+                subPage: resolve => require(["../pages/mall/mall.vue"], resolve),
+            }
         },
         {
             path: '/member',
