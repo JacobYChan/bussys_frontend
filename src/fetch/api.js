@@ -57,7 +57,7 @@ export default {
     },
     //访问信息初始化
     visitInfoInitial(params) {
-         return fetch('http://yao.jsheyun.net/app/wheelgj/visit', params, 'post')
+        return fetch('http://yao.jsheyun.net/app/wheelgj/visit', params, 'post')
     },
     //获取活动信息
     getActivityInfo(params) {
@@ -68,11 +68,23 @@ export default {
         return fetch('http://yao.jsheyun.net/app/wheelgj/drawlist', params, 'get')
     },
     //抽奖
-     getPrize(params) {
+    getPrize(params) {
         return fetch('http://yao.jsheyun.net/app/wheelgj/lottery', params, 'post')
     },
     //获取用户信息
-     getMemberInfo(params) {
+    getMemberInfo(params) {
         return fetch('http://yao.jsheyun.net/app/api/getuserinfobytoken', params, 'post')
-    } 
+    },
+    //获取用户金币数量
+    getMemberGoldCoin(params) {
+        return fetch('http://yao.jsheyun.net/app/api/user/yaofhb', params, 'get')
+    },
+    //获取用户红包数量
+    getMemberRedPacket(params) {
+        return fetch('http://yao.jsheyun.net/app/api/user/yaohb', params, 'get')
+    },
+    //获取用户卡券数量
+    getMemberTickets(params) {
+        return fetch('http://yao.jsheyun.net/app/wheelgj/getwheelcardnums', params, 'post')
+    },
 }

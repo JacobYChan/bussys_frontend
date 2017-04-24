@@ -3,53 +3,63 @@
         <div class="redPacket"
              v-if="status==1">
             <section class="head margin">
-                <section class="logo margin"><img v-lazy="logo"></section>
-                <h3>{{name}}</h3>
+                <section class="logo margin"><img :src="prize.img"></section>
+                <h3>{{prize.title}}</h3>
             </section>
             <h4>给您发了一个红包</h4>
             <section class="open"
                      @click="openRedpacket"><img src="../../../common/images/kai.png"></section>
             <p>点击广告得红包</p>
             <section class="close"
-                     @click="close"><span>×</span></section>
+                     @click="close">
+                <div><span>×</span></div>
+            </section>
         </div>
         <div class="packetResult"
              v-else>
             <section class="blank">
                 <div class="blank_content"></div>
             </section>
-            <section class="logo margin"><img v-lazy="logo"></section>
-            <h3>{{name}}</h3>
+            <section class="logo margin"><img :src="prize.img"></section>
+            <h3>{{prize.title}}</h3>
             <section class="packet_Amount">
                 <div>红包</div>
-                <span>{{packet_Amount}}</span>元
+                <span>{{prize.money}}</span>元
             </section>
             <p>已存入您的财富账户</p>
             <section class="close"
-                     @click="close"><span>×</span></section>
+                     @click="close">
+                <div><span>×</span></div>
+            </section>
         </div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     components: {
 
     },
     data() {
         return {
-            logo: 'http://wx.jsheyun.cn/logo.png',
-            name: '广电来摇吧',
+            // logo: 'http://wx.jsheyun.cn/logo.png',
+            // name: '广电来摇吧',
             status: 1,
-            packet_Amount: '5.94',
+            // packet_Amount: '5.94',
         }
     },
     created() {
-        document.title = "公交车摇一摇";
+
+    },
+    computed: {
+        ...mapGetters([
+            'prize'
+        ])
     },
     methods: {
         openRedpacket: function () {
-            this.$emit('toadv');
+            this.$emit('toadv', true, '');
             setTimeout(() => {
                 this.status = 2;
             }, 1000)
@@ -113,11 +123,16 @@ export default {
         @include wh(1rem, 1rem);
         border: 2px solid #e1544a;
         box-shadow: 0 0 0 1px #ff6226;
-        span {
-            @include sc(1.2rem, #ff6226);
-            position: absolute;
-            top: -.4rem;
-            right: .04rem;
+        div {
+            position: relative;
+            @include wh(1rem, 1rem);
+            span {
+                @include sc(1.2rem, #ff6226);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
     }
 }
@@ -180,11 +195,16 @@ export default {
         @include wh(1rem, 1rem);
         border: 2px solid #e1544a;
         box-shadow: 0 0 0 1px #ff6226;
-        span {
-            @include sc(1.2rem, #ff6226);
-            position: absolute;
-            top: -.2.5rem;
-            right: .1.5rem;
+        div {
+            position: relative;
+            @include wh(1rem, 1rem);
+            span {
+                @include sc(1.2rem, #ff6226);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
     }
 }

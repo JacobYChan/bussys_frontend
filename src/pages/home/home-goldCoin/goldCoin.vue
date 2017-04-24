@@ -11,7 +11,9 @@
                      @click="openGoldcoin"><img src="../../../common/images/kai.png"></section>
             <p>点击广告得金币</p>
             <section class="close"
-                     @click="close"><span>×</span></section>
+                     @click="close">
+                <div><span>×</span></div>
+            </section>
         </div>
         <div class="coinResult"
              v-else>
@@ -26,7 +28,9 @@
             </section>
             <p>已存入您的金币口袋</p>
             <section class="close"
-                     @click="close"><span>×</span></section>
+                     @click="close">
+                <div><span>×</span></div>
+            </section>
         </div>
     </div>
 </template>
@@ -55,7 +59,7 @@ export default {
     },
     methods: {
         openGoldcoin: function () {
-            this.$emit('toadv',true,'');
+            this.$emit('toadv', true, '');
             setTimeout(() => {
                 this.status = 2;
             }, 1000)
@@ -119,11 +123,16 @@ export default {
         @include wh(1rem, 1rem);
         border: 2px solid #fbc658;
         box-shadow: 0 0 0 1px #fbc658;
-        span {
-            @include sc(1.2rem, #fbc658);
-            position: absolute;
-            top: -.4rem;
-            right: .04rem;
+        div {
+            position: relative;
+            @include wh(1rem, 1rem);
+            span {
+                @include sc(1.2rem, #fbc658);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
     }
 }
@@ -182,11 +191,16 @@ export default {
         @include wh(1rem, 1rem);
         border: 2px solid #fbc658;
         box-shadow: 0 0 0 1px #fbc658;
-        span {
-            @include sc(1.2rem, #fbc658);
-            position: absolute;
-            top: -.2.5rem;
-            right: .1.5rem;
+        div {
+            position: relative;
+            @include wh(1.5rem, 1.5rem);
+            span {
+                @include sc(1.2rem, #fbc658);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
     }
 }

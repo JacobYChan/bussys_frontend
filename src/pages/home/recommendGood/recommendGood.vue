@@ -11,7 +11,11 @@
     
         <mt-button type="primary"
                    size="large">去看看</mt-button>
-        <section class="close"><span>×</span></section>
+        <section class="close">
+            <div>
+                <span>×</span>
+            </div>
+        </section>
     </div>
 </template>
 
@@ -101,11 +105,15 @@ export default {
         @include wh(1rem, 1rem);
         border: 2px solid #e1544a;
         box-shadow: 0 0 0 1px #ff6226;
-        span {
-            @include sc(1.2rem, #ff6226);
-            position: absolute;
-            top: -.2.5rem;
-            right: .1.5rem;
+        div {
+            position: relative;
+            @include wh(1rem, 1rem);
+            span {
+                @include sc(1.2rem, #ff6226);
+                position: absolute;
+                top: -.2.5rem;
+                right: .1.5rem;
+            }
         }
     }
 }

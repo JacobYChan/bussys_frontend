@@ -4,17 +4,17 @@
             <section class="myPrize_gold">
                 <div class="gold_icon"><i class="iconfont icon-jinbi"></i></div>
                 <span>金币</span>
-                <label>{{goldCount}}元</label>
+                <label>{{goldCoin.goldcoin}}元</label>
             </section>
             <section class="myPrize_redPacket">
                 <div class="redPacket_icon"><i class="iconfont icon-hongbao"></i></div>
                 <span>红包</span>
-                <label>{{redPacketCount}}元</label>
+                <label>{{redPacket.pdr_amount}}元</label>
             </section>
             <section class="myPrize_prize">
                 <div class="prize_icon"><i class="iconfont icon-jiang"></i></div>
                 <span>奖品</span>
-                <label>{{prizeNum}}个</label>
+                <label>{{tickets}}张</label>
             </section>
         </hgroup>
         <div class="shake_adv">
@@ -75,6 +75,11 @@
         <audio ref="yao"
                src="http://yao.jsheyun.net/app/hongxing/voice/v4.mp3"
                preload="auto"></audio>
+    
+        <div @click="getjp"
+             style="position:absolute;left:20%;bottom:20%; color:red">
+            测试摇一摇
+        </div>
     </div>
 </template>
 
@@ -89,7 +94,7 @@ import welcome from './welcome/welcome'
 import fail from './fail'
 import { getStore, setStore, removeStore } from '../../config/mUtils'
 import api from '../../fetch/api'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import { Toast } from 'mint-ui'
 export default {
     components: {
@@ -104,9 +109,9 @@ export default {
     },
     data() {
         return {
-            goldCount: 4.3,
-            redPacketCount: 444,
-            prizeNum: 2,
+            // goldCount: 4.3,
+            // redPacketCount: 444,
+            // prizeNum: 2,
             confirm: false,//遮罩背景是否显示
             ScrollContent: null,
             scrollNum: 0,
@@ -130,19 +135,38 @@ export default {
     },
 
     computed: {
-        ...mapState({
-            'activityInfo': state => state.activity.activityInfo,
-            'memberList': state => state.activity.memberList,
-            'prize': state => state.activity.prize,
-            'memberInfo': state => state.memberInfo.memberInfo
-        })
+        ...mapGetters([
+            'activityInfo',
+            'prize',
+            'memberList',
+            'memberInfo',
+            'goldCoin',
+            'redPacket',
+            'tickets'
+        ])
     },
     created() {
-
         if (getStore('notMind')) {
             this.showWelcome = false;
             this.show = false;
         }
+        api.visitInfoInitial({ token: getStore('token'), wid: 174 }).then(res => {
+            if (res.code !== 0) {
+                setTimeout(function () {
+                    Toast({
+                        message: res.msg,
+                        iconClass: 'icon iconfont icon-iconsb iconsb'
+                    })
+                }, 1000)
+            }
+        })
+        this.$store.dispatch('get_member_info', { token: getStore('token') }).then(() => {
+            this.$store.dispatch('get_member_gold_coin', { member_id: this.memberInfo.fhid })
+            this.$store.dispatch('get_member_red_packet', { member_id: this.memberInfo.fhid })
+        })
+        this.$store.dispatch('get_member_ticket', { token: getStore('token'), wid: 174 })
+
+
         // if (this.$route.query.token) {
         //     setStore('token', this.$route.query.token)
         //     //console.log(this.$route.query.token + "路由token")
@@ -268,23 +292,17 @@ export default {
             }
         },
         getjp() {
-            api.visitInfoInitial({ token: getStore('token'), wid: 174 }).then(res => {
-                if (res.code !== 0) {
-                    setTimeout(function () {
-                        Toast({
-                            message: res.msg,
-                            iconClass: 'icon iconfont icon-iconsb iconsb'
-                        })
-                    }, 1000)
-                }
-            })
             this.$store.dispatch('get_prize', { token: getStore('token'), wid: 174 }).then(() => {
                 this.show = true;
                 if (this.prize.code === 0) {
                     if (this.prize.type === 1) {
                         this.currentView = 'gift'
                     } else if (this.prize.type === 5) {
-                        this.currentView = "goldcoin"
+                        if (this.prize.crptype === 2) {
+                            this.currentView = "goldcoin"
+                        } else if (this.prize.crptype === 3) {
+                            this.currentView = "redpacket"
+                        }
                     }
                 } else {
                     this.currentView = "fail"

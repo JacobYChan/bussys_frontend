@@ -26,18 +26,23 @@
             </hgroup>
             <section class="welcome_msg">
                 <i class="iconfont icon-xiaoxi">
-                                                <mt-badge type="error" size="small">1</mt-badge>
-                                            </i>
+                                                            <mt-badge type="error" size="small">1</mt-badge>
+                                                        </i>
                 <span class="ellipsis">赶快领取小瑶送你的<em>专属福利</em></span>
             </section>
             <section class="notRemind">
                 <!-- CheckBox-->
                 <span class="mint-checkbox"><input type="checkbox" class="mint-checkbox-input" v-model="checked" id="remind"> 
-                                                    <span class="mint-checkbox-core" @click="check()"></span>
+                                                                <span class="mint-checkbox-core" @click="check()"></span>
                 </span>
                 <label for="remind">下次不再提醒</label>
             </section>
-            <section class="close" @click="close()"><span>×</span></section>
+            <section class="close"
+                     @click="close()">
+                <div>
+                    <span>×</span>
+                </div>
+            </section>
         </div>
     </div>
 </template>
@@ -56,7 +61,7 @@ export default {
     },
     props: {
         getFromparent: {
-           
+
         }
     },
     created() {
@@ -66,7 +71,7 @@ export default {
             this.checked = !this.checked;
         },
         close: function () {
-            this.$emit('close',this.checked);
+            this.$emit('close', this.checked);
         }
     }
 }
@@ -116,7 +121,7 @@ export default {
     .head {
         @include wh(100%, auto);
         h3 {
-            @include sc(.7rem, #5e5f5b);
+            @include sc(.6rem, #5e5f5b);
             font-weight: normal;
             margin-top: .3rem;
         }
@@ -127,7 +132,7 @@ export default {
         }
         p {
             width: 95%;
-            @include sc(.7rem, #5e5f5b);
+            @include sc(.6rem, #5e5f5b);
             margin: 0 auto;
         }
     }
@@ -158,7 +163,7 @@ export default {
                 }
             }
             p {
-                @include sc(.7rem, #5e5f5b);
+                @include sc(.6rem, #5e5f5b);
                 margin-top: .1rem;
             }
         }
@@ -183,7 +188,7 @@ export default {
             }
         }
         span {
-            @include sc(.7rem, #5e5f5b);
+            @include sc(.6rem, #5e5f5b);
             em {
                 color: #ff6226;
                 font-style: normal;
@@ -192,7 +197,7 @@ export default {
     }
     .notRemind {
         label {
-            @include sc(.7rem, #fe6028);
+            @include sc(.6rem, #fe6028);
         }
     }
     .close {
@@ -204,11 +209,16 @@ export default {
         @include wh(1.5rem, 1.5rem);
         border: 2px solid #e1544a;
         box-shadow: 0 0 0 1px #ff6226;
+        div {
+            position: relative;
+            @include wh(1.5rem, 1.5rem);
+        }
         span {
             @include sc(1.8rem, #ff6226);
             position: absolute;
-            top: -.3rem;
-            right: .1rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     }
 }

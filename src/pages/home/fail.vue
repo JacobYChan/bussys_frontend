@@ -6,10 +6,13 @@
             <p>再接再厉</p>
             <img src="../../common/images/fail.png">
             <mt-button type="primary"
-                       size="large"  @click.native="close">继续摇</mt-button>
+                       size="large"
+                       @click.native="close">继续摇</mt-button>
         </div>
         <section class="close"
-                 @click="close"><span>×</span></section>
+                 @click="close">
+            <div><span>×</span></div>
+        </section>
     </div>
 </template>
 
@@ -69,11 +72,16 @@ export default {
         @include wh(1rem, 1rem);
         border: 2px solid #2e539a;
         box-shadow: 0 0 0 1px #2e539a;
-        span {
-            @include sc(1.2rem, #2e539a);
-            position: absolute;
-            top: -.3rem;
-            right: .1rem;
+        div {
+            position: relative;
+            @include wh(1rem, 1rem);
+            span {
+                @include sc(1.2rem, #2e539a);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
     }
 }

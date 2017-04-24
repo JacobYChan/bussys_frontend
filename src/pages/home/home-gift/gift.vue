@@ -9,7 +9,9 @@
                    size="large"
                    @click="getPrize">立即使用</mt-button>
         <section class="close"
-                 @click="close"><span>×</span></section>
+                 @click="close">
+            <div><span>×</span></div>
+        </section>
     </div>
 </template>
 
@@ -34,7 +36,7 @@ export default {
     },
     methods: {
         getPrize: function () {
-            this.$emit('toadv',true,'');
+            this.$emit('toadv', true, '');
         },
         close: function () {
             this.$emit('close');
@@ -102,11 +104,16 @@ export default {
         @include wh(1rem, 1rem);
         border: 2px solid #fbc658;
         box-shadow: 0 0 0 1px #fbc658;
-        span {
-            @include sc(1.2rem, #fbc658);
-            position: absolute;
-            top: -.2.5rem;
-            right: .1.5rem;
+        div {
+            position: relative;
+            @include wh(1rem, 1rem);
+            span {
+                @include sc(1.2rem, #fbc658);
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
     }
 }
