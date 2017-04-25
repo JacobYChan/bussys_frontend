@@ -8,7 +8,7 @@
                  height="60">
         </mt-cell>
         <mt-cell title="订单"
-                 to=""
+                 to="http://fhg.jsheyun.net/weixin/order/index?ordertype=all"
                  is-link>
             <i slot="icon"
                class="iconfont icon-dingdan"
@@ -16,7 +16,7 @@
                height="24"></i>
         </mt-cell>
         <mt-cell title="中奖"
-                 to=""
+                 to="http://yao.jsheyun.net/app/index/cardlist"
                  is-link
                  style="margin:0">
             <i slot="icon"
@@ -25,7 +25,7 @@
                height="24"></i>
         </mt-cell>
         <mt-cell title="钱包"
-                 to=""
+                 to="http://fhg.jsheyun.net/weixin/goldcoin/index"
                  is-link
                  style="margin:0">
             <span>金币, 现金</span>

@@ -4,12 +4,12 @@
             <section class="myPrize_gold">
                 <div class="gold_icon"><i class="iconfont icon-jinbi"></i></div>
                 <span>金币</span>
-                <label>{{goldCoin|filterValue}}个</label>
+                <label>{{goldCoin|filterGold}}个</label>
             </section>
             <section class="myPrize_redPacket">
                 <div class="redPacket_icon"><i class="iconfont icon-hongbao"></i></div>
                 <span>红包</span>
-                <label>{{redPacket|filterValue}}元</label>
+                <label>{{redPacket|filterPacket}}元</label>
             </section>
             <section class="myPrize_prize">
                 <div class="prize_icon"><i class="iconfont icon-jiang"></i></div>
@@ -28,15 +28,16 @@
                               name="fade">
                 <li :key="index"
                     v-for="(item,index) in memberList"
-                    :class="[item.gold ? 'active_gold' : 'active_ticket', 'ellipsis']">
+                    :class="[item.gold&&item.type==='2' ? 'active_gold' : item.gold&&item.type==='3'?'active_packet' : 'active_ticket', 'ellipsis']">
     
                     <section class="head_img">
                         <img :src="item.headimgurl">
                     </section>
                     <hgroup class="list_info">
                         <h3>{{item.nickname}}</h3>
-                        <h5 v-if="item.gold">摇到了1个金币锦囊</h5>
-                        <h5 v-else>摇到了1个卡券锦囊</h5>
+                        <h5 v-if="item.gold&&item.type==='2'">摇到了{{item.subtitle}} {{item.gold}}个金币</h5>
+                        <h5 v-else-if="item.gold&&item.type==='3'">摇到了{{item.subtitle}} {{item.gold|filterPacket}}元红包</h5>
+                        <h5 v-else="">摇到了{{item.subtitle}}卡券</h5>
                     </hgroup>
                     <hgroup class="list_location">
                         <!--<h5>江苏省扬州市</h5> -->
@@ -76,10 +77,10 @@
                src="http://yao.jsheyun.net/app/hongxing/voice/v4.mp3"
                preload="auto"></audio>
     
-        <div @click="getjp()"
+        <!--<div @click="getjp()"
              style="position:absolute;left:20%;bottom:20%; color:red">
             测试摇一摇
-        </div>
+        </div>-->
     </div>
 </template>
 
@@ -108,8 +109,12 @@ export default {
         fail
     },
     filters: {
-        filterValue(value) {
+        filterGold(value) {
             return parseInt(value)
+        },
+        filterPacket(value) {
+            let newValue = value / 100
+            return newValue.toFixed(2)
         }
     },
     data() {
@@ -142,9 +147,9 @@ export default {
             prize: state => state.activity.prize,
             memberList: state => state.activity.memberList,
             memberInfo: state => state.memberInfo.memberInfo,
-            goldCoin:state => state.memberInfo.goldCoin,
-            redPacket:state => state.memberInfo.redPacket,
-            tickets:state => state.memberInfo.tickets
+            goldCoin: state => state.memberInfo.goldCoin,
+            redPacket: state => state.memberInfo.redPacket,
+            tickets: state => state.memberInfo.tickets
         })
     },
     created() {
@@ -152,6 +157,7 @@ export default {
             this.showWelcome = false;
             this.show = false;
         }
+        document.title="公交摇一摇"
         api.visitInfoInitial({ token: getStore('token'), wid: 174 }).then(res => {
             if (res.code !== 0) {
                 setTimeout(function () {
@@ -162,6 +168,7 @@ export default {
                 }, 1000)
             }
         })
+        // this.getInfo()
         this.$store.dispatch('get_member_info', { token: getStore('token') })
 
         setTimeout(() => {
@@ -201,6 +208,13 @@ export default {
         })
     },
     methods: {
+        // getInfo: async function () {
+        //     await this.$store.dispatch('get_member_info', { token: getStore('token') })
+        //     console.log(this.memberInfo.fhid + "用户ID")
+        //     this.$store.dispatch('get_member_gold_coin', { member_id: this.memberInfo.fhid })
+        //     this.$store.dispatch('get_member_red_packet', { member_id: this.memberInfo.fhid })
+
+        // },
         Start: function () {
             setInterval(() => {
                 this.Run(this.ScrollContent, "margin-top", this.upHeight, () => {
@@ -266,6 +280,7 @@ export default {
                 if (this.prize.type === 1) {
                     this.currentView = ""
                     window.location.href = url
+                    this.show = false;
                     this.flag = 1;
                 }
             }
@@ -317,7 +332,7 @@ export default {
                 } else {
                     this.currentView = "fail"
                 }
-            }, 2000)
+            }, 300)
         }
     }
 }
@@ -360,7 +375,6 @@ export default {
             flex: 1;
             display: flex;
             margin: .6rem .2rem;
-            padding: .2rem;
             @include borderRadius(1rem);
             .iconfont {
                 @include sc(.8rem, #fff);
@@ -378,8 +392,8 @@ export default {
             padding: .2rem;
         }
         @mixin span($color) {
-            @include sc(.6rem, $color);
-            margin: .1rem 0 .2rem .2rem;
+            @include sc(.55rem, $color);
+            margin: .1rem 0 .1rem .2rem;
             font-weight: 500;
         } // 定义边框
         @mixin border($color) {
@@ -440,12 +454,16 @@ export default {
                 display: flex;
                 padding: .2rem;
                 position: relative;
+                &.active_packet {
+                    @include active(rgba(253, 122, 156, 0.8), #2e539a);
+                    @include borderRadius(2rem);
+                }
                 &.active_gold {
                     @include active();
                     @include borderRadius(2rem);
                 }
                 &.active_ticket {
-                    @include active(rgba(253, 122, 156, 0.8), #fd7a9c);
+                    @include active(rgba(46, 83, 154, 0.8), #fd7a9c);
                     @include borderRadius(2rem);
                 }
                 &:after {

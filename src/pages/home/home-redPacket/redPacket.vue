@@ -8,7 +8,7 @@
             </section>
             <h4>给您发了一个红包</h4>
             <section class="open"
-                     @click="openRedpacket"><img src="../../../common/images/kai.png"></section>
+                     @click="openRedpacket()"><img src="../../../common/images/kai.png"></section>
             <p>点击广告得红包</p>
             <section class="close"
                      @click="close">
@@ -51,7 +51,7 @@ export default {
     },
     filters:{
         filterMoney(value){
-            newValue = value/100
+            let newValue = value/100
             return newValue.toFixed(2)
         }
     },
@@ -68,10 +68,14 @@ export default {
             this.$emit('toadv', true, '');
             setTimeout(() => {
                 this.status = 2;
-            }, 1000)
+                console.log(this.status)
+            }, 300)
         },
         close: function () {
             this.$emit('close');
+            setTimeout(() => {
+                this.status = 1;
+            }, 300)
         }
     }
 }
@@ -94,6 +98,7 @@ export default {
             padding: .2rem;
             img {
                 @include wh(2rem, 2rem);
+                 border-radius: 50%;
             }
         }
         h3 {
@@ -165,6 +170,7 @@ export default {
         margin-top: -1.2rem;
         img {
             @include wh(2rem, 2rem);
+             border-radius: 50%;
         }
     }
     h3 {

@@ -2,7 +2,7 @@
     <div>
         <div class="welcome">
             <section class="head margin">
-                <h3>嗨！我是小瑶！</h3>
+                <h3>嗨！我是来摇吧！</h3>
                 <img v-lazy="head_img">
                 <p class="ellipsis">很高兴和您成为摇一摇里的新朋友</p>
                 <p class="ellipsis">摇一摇有惊喜哦，跟我一起摇起来吧！</p>

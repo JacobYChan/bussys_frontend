@@ -40,6 +40,7 @@ const filters = {
         var newdate = date * 1000;
         var date = new Date(newdate)
         var o = {
+            "Y+": date.getFullYear(), //年
             "M+": date.getMonth() + 1, //月份
             "d+": date.getDate(), //日
             "h+": date.getHours(), //小时

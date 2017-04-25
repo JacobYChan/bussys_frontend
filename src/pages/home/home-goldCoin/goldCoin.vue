@@ -62,10 +62,14 @@ export default {
             this.$emit('toadv', true, '');
             setTimeout(() => {
                 this.status = 2;
-            }, 1000)
+                console.log(this.status)
+            }, 300)
         },
         close: function () {
             this.$emit('close');
+            setTimeout(() => {
+                this.status = 1;
+            }, 300)
         }
     }
 }
@@ -88,6 +92,7 @@ export default {
             padding: .2rem;
             img {
                 @include wh(2rem, 2rem);
+                border-radius: 50%;
             }
         }
         h3 {
@@ -159,6 +164,7 @@ export default {
         margin-top: -1.2rem;
         img {
             @include wh(2rem, 2rem);
+             border-radius: 50%;
         }
     }
     h3 {
@@ -193,7 +199,7 @@ export default {
         box-shadow: 0 0 0 1px #fbc658;
         div {
             position: relative;
-            @include wh(1.5rem, 1.5rem);
+            @include wh(1rem, 1rem);
             span {
                 @include sc(1.2rem, #fbc658);
                 position: absolute;

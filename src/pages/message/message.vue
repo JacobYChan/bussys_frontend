@@ -10,10 +10,10 @@
                 </div>
                 <div class="messageContent">
                     <h3>{{item.business_name}}</h3>
-                    <p>{{item.content}}</p>
+                    <p>{{item.description}}</p>
                     <a class="messageLink"
-                                 v-if="item.url!==''"
-                                 :href="item.url">
+                       v-if="item.url!==''"
+                       :href="item.url">
                         <img :src="item.img">
                         <span>{{item.description}}</span>
                     </a>
@@ -79,6 +79,7 @@ export default {
                 }
                 p {
                     @include sc(.6rem, #666);
+                    margin: .3rem 0;
                 }
                 .messageLink {
                     background-color: #ddd;
@@ -95,13 +96,16 @@ export default {
                         margin-left: .2rem;
                     }
                 }
-                .messageArticle{
+                .messageArticle {
                     width: 100%;
                     display: block;
                     margin-top: .2rem;
+                    img {
+                        width: 100%;
+                    }
                 }
-                .messageTime{
-                    @include sc(.6rem,#999);
+                .messageTime {
+                    @include sc(.6rem, #999);
                     margin: .5rem 0 0 0;
                 }
             }
