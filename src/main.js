@@ -51,8 +51,8 @@ router.beforeEach(function (to, from, next) {
     store.dispatch('get_activity_info', { token: getStore('token'), wid: 174 })
     store.dispatch('get_member_list', { wid: 174 })
     
-    if (getStore('token') === null || getStore('token') === undefined) {
-        let url = encodeURIComponent("fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl2=bus.jsheyun.com")
+    if (getStore('token') == null || getStore('token') == undefined||getStore('token')==false) {
+        let url = encodeURIComponent("fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl2=localhost:8080")
         window.location.replace(`http://yao.jsheyun.net/app/api/grantgetyaotoken?jumpurl=${url}`)
     } else {
         next()
