@@ -58,7 +58,7 @@ export default {
 .message {
     .messageBox {
         margin-bottom: 4rem;
-        margin-top: 40px;
+        margin-top: 1.8rem;
         .messageItem {
             display: flex;
             padding: .5rem;
@@ -74,7 +74,7 @@ export default {
                 margin-left: .5rem;
                 width: 100%;
                 h3 {
-                    @include sc(.7rem, #000);
+                    @include sc(.6rem, #000);
                     font-weight: 500;
                 }
                 p {

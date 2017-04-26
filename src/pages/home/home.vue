@@ -1,17 +1,20 @@
 <template>
     <div id="shake">
         <hgroup class="myPrize">
-            <section class="myPrize_gold">
+            <section class="myPrize_gold"
+                     @click="location('http://fhg.jsheyun.net/weixin/goldcoin/index')">
                 <div class="gold_icon"><i class="iconfont icon-jinbi"></i></div>
                 <span>金币</span>
                 <label>{{goldCoin|filterGold}}个</label>
             </section>
-            <section class="myPrize_redPacket">
+            <section class="myPrize_redPacket"
+                     @click="location('')">
                 <div class="redPacket_icon"><i class="iconfont icon-hongbao"></i></div>
                 <span>红包</span>
                 <label>{{redPacket|filterPacket}}元</label>
             </section>
-            <section class="myPrize_prize">
+            <section class="myPrize_prize"
+                     @click="location('http://yao.jsheyun.net/app/index/cardlist')">
                 <div class="prize_icon"><i class="iconfont icon-jiang"></i></div>
                 <span>卡券</span>
                 <label>{{tickets}}张</label>
@@ -78,9 +81,9 @@
                preload="auto"></audio>
     
         <!--<div @click="getjp()"
-             style="position:absolute;left:20%;bottom:20%; color:red">
-            测试摇一摇
-        </div>-->
+                 style="position:absolute;left:20%;bottom:20%; color:red">
+                测试摇一摇
+            </div>-->
     </div>
 </template>
 
@@ -157,7 +160,7 @@ export default {
             this.showWelcome = false;
             this.show = false;
         }
-        document.title="公交摇一摇"
+        document.title = "公交摇一摇"
         api.visitInfoInitial({ token: getStore('token'), wid: 174 }).then(res => {
             if (res.code !== 0) {
                 setTimeout(function () {
@@ -208,6 +211,9 @@ export default {
         })
     },
     methods: {
+        location(url) {
+            window.location.href = url;
+        },
         // getInfo: async function () {
         //     await this.$store.dispatch('get_member_info', { token: getStore('token') })
         //     console.log(this.memberInfo.fhid + "用户ID")
@@ -365,6 +371,13 @@ export default {
     font-size: 1.2rem !important;
 }
 
+.mint-header {
+    height: 1.8rem;
+    h1 {
+        font-size: .6rem;
+    }
+}
+
 #shake {
 
     background: #fef3f1;
@@ -393,7 +406,7 @@ export default {
         }
         @mixin span($color) {
             @include sc(.55rem, $color);
-            margin: .1rem 0 .1rem .2rem;
+            margin: .15rem 0 .1rem .2rem;
             font-weight: 500;
         } // 定义边框
         @mixin border($color) {
