@@ -52,7 +52,7 @@ router.beforeEach(function (to, from, next) {
     store.dispatch('get_member_list', { wid: 174 })
     
     if (getStore('token') === null || getStore('token') === undefined) {
-        let url = encodeURIComponent("fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?bus.jsheyun.com")
+        let url = encodeURIComponent("fhg.jsheyun.net/weixin/index/pushuserbyfhinfo?jumpurl2=bus.jsheyun.com")
         window.location.replace(`http://yao.jsheyun.net/app/api/grantgetyaotoken?jumpurl=${url}`)
     } else {
         next()
