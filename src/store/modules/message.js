@@ -7,8 +7,8 @@ const state = {
 }
 
 const actions = {
-    get_message_list({ commit }) {
-        api.getMessageList().then(res => {
+    get_message_list({ commit },params) {
+        api.getMessageList(params).then(res => {
             commit(types.GET_MESSAGE_LIST, res)
         })
     },

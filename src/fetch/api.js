@@ -48,8 +48,8 @@ export function fetch(url, params, method) {
 
 export default {
     //获取消息列表
-    getMessageList() {
-        return fetch('http://yao.jsheyun.net/app/wheelgj/messagelist', { offset: 1000, begin: 0 }, 'post')
+    getMessageList(params) {
+        return fetch('http://yao.jsheyun.net/app/wheelgj/messagelist', params, 'post')
     },
     //获取消息详情
     getMessageDetail(id) {
