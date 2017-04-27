@@ -64,6 +64,8 @@ export default {
             this.page += 1;
             if (this.page >= this.totalPage) {
                 this.allLoaded = true;
+                // document.querySelector(".mint-loadmore-text").text="已经到底了"
+                // console.log(document.querySelector(".mint-loadmore-text").innerHTML)
             }
             setTimeout(() => {
                 api.getMessageList({ begin: (this.page - 1) * 5, offset: 5 }).then(res => {
@@ -100,7 +102,10 @@ export default {
 <style lang="scss">
 @import '../../common/style/mixin';
 .message {
-    .mint-loadmore,
+    .mint-loadmore-content{
+        margin-bottom: .6rem;
+    }
+    .mint-loadmore
     {
         margin-bottom: 4rem;
     }
